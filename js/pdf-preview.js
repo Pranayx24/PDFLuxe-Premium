@@ -1,173 +1,625 @@
 (() => {
   "use strict";
 
+  /*
+   * =========================================================
+   * PDFLUXE PREMIUM — PDF PREVIEW ENGINE
+   * =========================================================
+   *
+   * Requires:
+   *   - PDF.js loaded as window.pdfjsLib
+   *   - index.html preview elements
+   *
+   * Public API:
+   *   PDFLuxePreview.open(file)
+   *   PDFLuxePreview.load(file)
+   *   PDFLuxePreview.clear()
+   *   PDFLuxePreview.next()
+   *   PDFLuxePreview.previous()
+   *   PDFLuxePreview.goToPage(number)
+   */
+
   let pdfDocument = null;
+  let currentFile = null;
   let currentPage = 1;
   let totalPages = 0;
-  let currentFile = null;
-  let renderToken = 0;
 
-  const $ = (selector) =>
+  let renderToken = 0;
+  let thumbnailToken = 0;
+
+  let initialized = false;
+  let keyboardHandlerAttached = false;
+
+  const $ = selector =>
     document.querySelector(selector);
 
+  /* ---------------------------------------------------------
+     ELEMENTS
+  --------------------------------------------------------- */
+
   function getElements() {
+
     return {
-      preview: $("#documentPreview"),
-      canvas: $("#previewCanvas"),
-      loading: $("#previewLoading"),
-      fileName: $("#previewFileName"),
-      pageCount: $("#previewPageCount"),
-      currentPage: $("#previewCurrentPage"),
-      prev: $("#previewPrev"),
-      next: $("#previewNext"),
-      prevBottom: $("#previewPrevBottom"),
-      nextBottom: $("#previewNextBottom"),
-      thumbnails: $("#previewThumbnails")
+
+      preview:
+        $("#documentPreview"),
+
+      canvas:
+        $("#previewCanvas"),
+
+      loading:
+        $("#previewLoading"),
+
+      fileName:
+        $("#previewFileName"),
+
+      pageCount:
+        $("#previewPageCount"),
+
+      currentPage:
+        $("#previewCurrentPage"),
+
+      prev:
+        $("#previewPrev"),
+
+      next:
+        $("#previewNext"),
+
+      prevBottom:
+        $("#previewPrevBottom"),
+
+      nextBottom:
+        $("#previewNextBottom"),
+
+      thumbnails:
+        $("#previewThumbnails"),
+
+      pageContainer:
+        document.querySelector(
+          ".preview-page"
+        )
+
     };
+
+  }
+
+  /* ---------------------------------------------------------
+     PDF.JS CHECK
+  --------------------------------------------------------- */
+
+  function pdfJsAvailable() {
+
+    return (
+      window.pdfjsLib &&
+      typeof window.pdfjsLib.getDocument ===
+        "function"
+    );
+
+  }
+
+  /* ---------------------------------------------------------
+     PREVIEW VISIBILITY
+  --------------------------------------------------------- */
+
+  function showPreview() {
+
+    const elements =
+      getElements();
+
+    if (!elements.preview) {
+      return;
+    }
+
+    elements.preview.hidden =
+      false;
+
   }
 
   function hidePreview() {
-    const elements = getElements();
 
-    if (!elements.preview) return;
+    const elements =
+      getElements();
 
-    elements.preview.hidden = true;
+    if (!elements.preview) {
+      return;
+    }
+
+    elements.preview.hidden =
+      true;
+
+  }
+
+  /* ---------------------------------------------------------
+     RESET STATE
+  --------------------------------------------------------- */
+
+  function resetState() {
+
+    renderToken++;
+
+    thumbnailToken++;
 
     pdfDocument = null;
+
     currentFile = null;
+
     currentPage = 1;
+
     totalPages = 0;
+
   }
 
-  function showPreview() {
-    const elements = getElements();
+  /* ---------------------------------------------------------
+     CLEAR CANVAS
+  --------------------------------------------------------- */
 
-    if (!elements.preview) return;
+  function clearCanvas() {
 
-    elements.preview.hidden = false;
-  }
+    const elements =
+      getElements();
 
-  function updateControls() {
-    const elements = getElements();
-
-    if (!elements.preview) return;
-
-    elements.currentPage.textContent =
-      `Page ${currentPage} of ${totalPages}`;
-
-    elements.pageCount.textContent =
-      `${totalPages} page${totalPages === 1 ? "" : "s"}`;
-
-    const atFirst =
-      currentPage <= 1;
-
-    const atLast =
-      currentPage >= totalPages;
-
-    elements.prev.disabled = atFirst;
-    elements.prevBottom.disabled = atFirst;
-
-    elements.next.disabled = atLast;
-    elements.nextBottom.disabled = atLast;
-
-    elements.loading.style.display =
-      "none";
-
-    document
-      .querySelectorAll(".preview-thumbnail")
-      .forEach((thumbnail, index) => {
-        thumbnail.classList.toggle(
-          "active",
-          index + 1 === currentPage
-        );
-      });
-  }
-
-  async function renderPage(pageNumber) {
-    if (!pdfDocument) return;
-
-    const elements = getElements();
-
-    if (!elements.canvas) return;
-
-    const token = ++renderToken;
-
-    elements.loading.style.display =
-      "block";
-
-    const page =
-      await pdfDocument.getPage(
-        pageNumber
-      );
-
-    if (token !== renderToken) return;
-
-    const viewport =
-      page.getViewport({
-        scale: 1.5
-      });
+    if (!elements.canvas) {
+      return;
+    }
 
     const canvas =
       elements.canvas;
 
     const context =
-      canvas.getContext("2d");
-
-    const containerWidth =
-      elements.preview
-        .querySelector(".preview-page")
-        .clientWidth;
-
-    const scale =
-      Math.min(
-        1.5,
-        Math.max(
-          0.6,
-          (containerWidth - 20) /
-            viewport.width
-        )
+      canvas.getContext(
+        "2d"
       );
 
-    const scaledViewport =
-      page.getViewport({
-        scale
-      });
+    if (context) {
 
-    canvas.width =
-      Math.floor(
-        scaledViewport.width
+      context.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
       );
 
-    canvas.height =
-      Math.floor(
-        scaledViewport.height
-      );
+    }
 
-    canvas.style.width =
-      `${scaledViewport.width}px`;
+    canvas.width = 0;
+    canvas.height = 0;
 
-    canvas.style.height =
-      `${scaledViewport.height}px`;
+    canvas.style.width = "";
+    canvas.style.height = "";
 
-    await page.render({
-      canvasContext: context,
-      viewport: scaledViewport
-    }).promise;
+  }
 
-    if (token !== renderToken) return;
+  /* ---------------------------------------------------------
+     CLEAR PREVIEW
+  --------------------------------------------------------- */
+
+  function clearPreview() {
+
+    resetState();
+
+    hidePreview();
+
+    clearCanvas();
+
+    const elements =
+      getElements();
+
+    if (elements.fileName) {
+
+      elements.fileName.textContent =
+        "";
+
+    }
+
+    if (elements.pageCount) {
+
+      elements.pageCount.textContent =
+        "";
+
+    }
+
+    if (elements.currentPage) {
+
+      elements.currentPage.textContent =
+        "";
+
+    }
+
+    if (elements.loading) {
+
+      elements.loading.textContent =
+        "";
+
+      elements.loading.style.display =
+        "none";
+
+    }
+
+    if (elements.thumbnails) {
+
+      elements.thumbnails.innerHTML =
+        "";
+
+    }
+
+  }
+
+  /* ---------------------------------------------------------
+     LOADING STATE
+  --------------------------------------------------------- */
+
+  function setLoading(
+    message = "Loading PDF…"
+  ) {
+
+    const elements =
+      getElements();
+
+    if (!elements.loading) {
+      return;
+    }
+
+    elements.loading.textContent =
+      message;
+
+    elements.loading.style.display =
+      "block";
+
+  }
+
+  function hideLoading() {
+
+    const elements =
+      getElements();
+
+    if (!elements.loading) {
+      return;
+    }
 
     elements.loading.style.display =
       "none";
 
-    updateControls();
   }
 
+  /* ---------------------------------------------------------
+     CONTROL STATE
+  --------------------------------------------------------- */
+
+  function updateControls() {
+
+    const elements =
+      getElements();
+
+    if (!elements.preview) {
+      return;
+    }
+
+    const hasPDF =
+      Boolean(
+        pdfDocument &&
+        totalPages
+      );
+
+    if (elements.pageCount) {
+
+      elements.pageCount.textContent =
+        hasPDF
+          ? `${totalPages} page${
+              totalPages === 1
+                ? ""
+                : "s"
+            }`
+          : "";
+
+    }
+
+    if (elements.currentPage) {
+
+      elements.currentPage.textContent =
+        hasPDF
+          ? `Page ${currentPage} of ${totalPages}`
+          : "";
+
+    }
+
+    const atFirst =
+      !hasPDF ||
+      currentPage <= 1;
+
+    const atLast =
+      !hasPDF ||
+      currentPage >= totalPages;
+
+    [
+      elements.prev,
+      elements.prevBottom
+    ].forEach(button => {
+
+      if (button) {
+        button.disabled =
+          atFirst;
+      }
+
+    });
+
+    [
+      elements.next,
+      elements.nextBottom
+    ].forEach(button => {
+
+      if (button) {
+        button.disabled =
+          atLast;
+      }
+
+    });
+
+    if (elements.thumbnails) {
+
+      elements.thumbnails
+        .querySelectorAll(
+          ".preview-thumbnail"
+        )
+        .forEach(
+          (
+            thumbnail,
+            index
+          ) => {
+
+            thumbnail.classList.toggle(
+              "active",
+              index + 1 ===
+                currentPage
+            );
+
+          }
+        );
+
+    }
+
+  }
+
+  /* ---------------------------------------------------------
+     PAGE DIMENSIONS
+  --------------------------------------------------------- */
+
+  function getRenderScale(
+    viewport
+  ) {
+
+    const elements =
+      getElements();
+
+    const container =
+      elements.pageContainer ||
+      elements.preview;
+
+    if (!container) {
+
+      return 1.2;
+
+    }
+
+    const availableWidth =
+      Math.max(
+        240,
+        container.clientWidth - 24
+      );
+
+    const fitScale =
+      availableWidth /
+      viewport.width;
+
+    return Math.min(
+      1.6,
+      Math.max(
+        0.6,
+        fitScale
+      )
+    );
+
+  }
+
+  /* ---------------------------------------------------------
+     RENDER CURRENT PAGE
+  --------------------------------------------------------- */
+
+  async function renderPage(
+    pageNumber
+  ) {
+
+    if (
+      !pdfDocument ||
+      !totalPages
+    ) {
+      return;
+    }
+
+    if (
+      pageNumber < 1 ||
+      pageNumber > totalPages
+    ) {
+      return;
+    }
+
+    const elements =
+      getElements();
+
+    if (!elements.canvas) {
+      return;
+    }
+
+    const token =
+      ++renderToken;
+
+    currentPage =
+      pageNumber;
+
+    setLoading(
+      "Rendering page…"
+    );
+
+    updateControls();
+
+    try {
+
+      const page =
+        await pdfDocument.getPage(
+          pageNumber
+        );
+
+      if (
+        token !== renderToken
+      ) {
+        return;
+      }
+
+      const baseViewport =
+        page.getViewport({
+          scale: 1
+        });
+
+      const scale =
+        getRenderScale(
+          baseViewport
+        );
+
+      const viewport =
+        page.getViewport({
+          scale
+        });
+
+      const canvas =
+        elements.canvas;
+
+      const context =
+        canvas.getContext(
+          "2d",
+          {
+            alpha: false
+          }
+        );
+
+      if (!context) {
+        throw new Error(
+          "Canvas rendering is unavailable."
+        );
+      }
+
+      /*
+       * Retina / high-DPI support.
+       */
+
+      const devicePixelRatio =
+        Math.min(
+          window.devicePixelRatio ||
+            1,
+          2
+        );
+
+      canvas.width =
+        Math.floor(
+          viewport.width *
+            devicePixelRatio
+        );
+
+      canvas.height =
+        Math.floor(
+          viewport.height *
+            devicePixelRatio
+        );
+
+      canvas.style.width =
+        `${Math.floor(
+          viewport.width
+        )}px`;
+
+      canvas.style.height =
+        `${Math.floor(
+          viewport.height
+        )}px`;
+
+      context.setTransform(
+        devicePixelRatio,
+        0,
+        0,
+        devicePixelRatio,
+        0,
+        0
+      );
+
+      context.fillStyle =
+        "#ffffff";
+
+      context.fillRect(
+        0,
+        0,
+        viewport.width,
+        viewport.height
+      );
+
+      await page.render({
+        canvasContext:
+          context,
+        viewport
+      }).promise;
+
+      if (
+        token !== renderToken
+      ) {
+        return;
+      }
+
+      hideLoading();
+
+      updateControls();
+
+    } catch (error) {
+
+      if (
+        token !== renderToken
+      ) {
+        return;
+      }
+
+      console.error(
+        "PDFLuxe page render error:",
+        error
+      );
+
+      setLoading(
+        "Unable to render this page."
+      );
+
+    }
+
+  }
+
+  /* ---------------------------------------------------------
+     THUMBNAILS
+  --------------------------------------------------------- */
+
   async function createThumbnails() {
-    const elements = getElements();
 
-    if (!elements.thumbnails) return;
+    if (
+      !pdfDocument ||
+      !totalPages
+    ) {
+      return;
+    }
 
-    elements.thumbnails.innerHTML = "";
+    const elements =
+      getElements();
+
+    if (!elements.thumbnails) {
+      return;
+    }
+
+    const token =
+      ++thumbnailToken;
+
+    elements.thumbnails.innerHTML =
+      "";
 
     for (
       let pageNumber = 1;
@@ -175,41 +627,62 @@
       pageNumber++
     ) {
 
-      const button =
-        document.createElement("button");
+      if (
+        token !== thumbnailToken
+      ) {
+        return;
+      }
 
-      button.type = "button";
+      const button =
+        document.createElement(
+          "button"
+        );
+
+      button.type =
+        "button";
 
       button.className =
         "preview-thumbnail";
+
+      button.dataset.page =
+        String(
+          pageNumber
+        );
 
       button.setAttribute(
         "aria-label",
         `Preview page ${pageNumber}`
       );
 
-      const thumbnailCanvas =
-        document.createElement("canvas");
+      const canvas =
+        document.createElement(
+          "canvas"
+        );
+
+      canvas.setAttribute(
+        "aria-hidden",
+        "true"
+      );
 
       button.appendChild(
-        thumbnailCanvas
+        canvas
       );
 
       button.addEventListener(
         "click",
         () => {
-          currentPage =
-            pageNumber;
 
-          renderPage(
-            currentPage
+          goToPage(
+            pageNumber
           );
+
         }
       );
 
-      elements.thumbnails.appendChild(
-        button
-      );
+      elements.thumbnails
+        .appendChild(
+          button
+        );
 
       try {
 
@@ -218,85 +691,209 @@
             pageNumber
           );
 
+        if (
+          token !== thumbnailToken
+        ) {
+          return;
+        }
+
         const viewport =
           page.getViewport({
             scale: 0.18
           });
 
-        thumbnailCanvas.width =
-          viewport.width;
+        const ratio =
+          Math.min(
+            window.devicePixelRatio ||
+              1,
+            2
+          );
 
-        thumbnailCanvas.height =
-          viewport.height;
+        canvas.width =
+          Math.floor(
+            viewport.width *
+              ratio
+          );
+
+        canvas.height =
+          Math.floor(
+            viewport.height *
+              ratio
+          );
+
+        canvas.style.width =
+          `${viewport.width}px`;
+
+        canvas.style.height =
+          `${viewport.height}px`;
+
+        const context =
+          canvas.getContext(
+            "2d"
+          );
+
+        if (!context) {
+          continue;
+        }
+
+        context.setTransform(
+          ratio,
+          0,
+          0,
+          ratio,
+          0,
+          0
+        );
 
         await page.render({
           canvasContext:
-            thumbnailCanvas.getContext(
-              "2d"
-            ),
+            context,
           viewport
         }).promise;
 
       } catch (error) {
 
-        console.error(
-          "Thumbnail error:",
+        console.warn(
+          `Thumbnail ${pageNumber} failed:`,
           error
         );
 
       }
+
     }
 
     updateControls();
+
   }
 
-  async function loadPreview(file) {
+  /* ---------------------------------------------------------
+     LOAD PDF
+  --------------------------------------------------------- */
+
+  async function loadPreview(
+    file
+  ) {
+
     if (!file) {
-      hidePreview();
+      clearPreview();
       return;
     }
 
-    if (
-      !file.name
-        .toLowerCase()
-        .endsWith(".pdf")
-    ) {
+    const isPDF =
+      file.type ===
+        "application/pdf" ||
+      file.name
+        ?.toLowerCase()
+        .endsWith(".pdf");
+
+    if (!isPDF) {
+
+      if (
+        typeof window.PDFLuxe
+          ?.showToast ===
+        "function"
+      ) {
+
+        window.PDFLuxe.showToast(
+          "Please choose a PDF file."
+        );
+
+      }
+
       return;
+
     }
 
-    const elements = getElements();
+    if (!pdfJsAvailable()) {
+
+      console.error(
+        "PDFLuxe: PDF.js is not loaded."
+      );
+
+      const elements =
+        getElements();
+
+      if (elements.loading) {
+
+        elements.loading.textContent =
+          "PDF preview engine unavailable.";
+
+        elements.loading.style.display =
+          "block";
+
+      }
+
+      return;
+
+    }
+
+    const elements =
+      getElements();
 
     if (!elements.preview) {
+
       console.warn(
-        "PDFLuxe preview elements not found."
+        "PDFLuxe: #documentPreview not found."
       );
+
       return;
+
     }
 
-    currentFile = file;
+    /*
+     * Cancel previous render work.
+     */
 
-    currentPage = 1;
+    renderToken++;
 
-    totalPages = 0;
+    thumbnailToken++;
 
     pdfDocument = null;
 
+    currentFile =
+      file;
+
+    currentPage =
+      1;
+
+    totalPages =
+      0;
+
     showPreview();
 
-    elements.fileName.textContent =
-      file.name;
+    setLoading(
+      "Loading PDF…"
+    );
 
-    elements.pageCount.textContent =
-      "Loading…";
+    if (elements.fileName) {
 
-    elements.currentPage.textContent =
-      "Loading…";
+      elements.fileName.textContent =
+        file.name;
 
-    elements.loading.style.display =
-      "block";
+    }
 
-    elements.thumbnails.innerHTML =
-      "";
+    if (elements.pageCount) {
+
+      elements.pageCount.textContent =
+        "Loading…";
+
+    }
+
+    if (elements.currentPage) {
+
+      elements.currentPage.textContent =
+        "Loading…";
+
+    }
+
+    if (elements.thumbnails) {
+
+      elements.thumbnails.innerHTML =
+        "";
+
+    }
+
+    clearCanvas();
 
     try {
 
@@ -305,52 +902,169 @@
 
       const loadingTask =
         window.pdfjsLib.getDocument({
-          data: new Uint8Array(
-            arrayBuffer
-          )
+          data:
+            new Uint8Array(
+              arrayBuffer
+            )
         });
 
-      pdfDocument =
+      const documentProxy =
         await loadingTask.promise;
+
+      /*
+       * Make sure another PDF wasn't
+       * selected while this one loaded.
+       */
+
+      if (
+        currentFile !== file
+      ) {
+
+        try {
+          await documentProxy.destroy();
+        } catch (_) {}
+
+        return;
+
+      }
+
+      pdfDocument =
+        documentProxy;
 
       totalPages =
         pdfDocument.numPages;
 
-      if (!totalPages) {
+      if (
+        !totalPages
+      ) {
+
         throw new Error(
           "PDF contains no pages."
         );
+
       }
+
+      currentPage =
+        1;
 
       updateControls();
 
-      await renderPage(1);
+      await renderPage(
+        1
+      );
+
+      /*
+       * Create thumbnails after
+       * the main page is visible.
+       */
 
       await createThumbnails();
 
     } catch (error) {
 
       console.error(
-        "PDF preview error:",
+        "PDFLuxe preview error:",
         error
       );
 
-      elements.loading.textContent =
-        "Unable to preview this PDF.";
+      pdfDocument =
+        null;
 
-      elements.pageCount.textContent =
-        "Preview unavailable";
+      totalPages =
+        0;
 
-      elements.currentPage.textContent =
-        "";
+      if (elements.loading) {
 
-      showToast(
-        "PDF preview could not be loaded."
-      );
+        elements.loading.textContent =
+          "Unable to preview this PDF.";
+
+        elements.loading.style.display =
+          "block";
+
+      }
+
+      if (elements.pageCount) {
+
+        elements.pageCount.textContent =
+          "Preview unavailable";
+
+      }
+
+      if (elements.currentPage) {
+
+        elements.currentPage.textContent =
+          "";
+
+      }
+
+      if (
+        typeof window.PDFLuxe
+          ?.showToast ===
+        "function"
+      ) {
+
+        window.PDFLuxe.showToast(
+          "PDF preview could not be loaded."
+        );
+
+      }
+
     }
+
+  }
+
+  /* ---------------------------------------------------------
+     PAGE NAVIGATION
+  --------------------------------------------------------- */
+
+  function goToPage(
+    pageNumber
+  ) {
+
+    if (
+      !pdfDocument ||
+      !totalPages
+    ) {
+      return;
+    }
+
+    const target =
+      Number(
+        pageNumber
+      );
+
+    if (
+      !Number.isFinite(
+        target
+      )
+    ) {
+      return;
+    }
+
+    const page =
+      Math.min(
+        totalPages,
+        Math.max(
+          1,
+          Math.floor(
+            target
+          )
+        )
+      );
+
+    currentPage =
+      page;
+
+    renderPage(
+      currentPage
+    );
+
+    updateControls();
+
   }
 
   function previousPage() {
+
     if (
       !pdfDocument ||
       currentPage <= 1
@@ -358,14 +1072,14 @@
       return;
     }
 
-    currentPage--;
-
-    renderPage(
-      currentPage
+    goToPage(
+      currentPage - 1
     );
+
   }
 
   function nextPage() {
+
     if (
       !pdfDocument ||
       currentPage >= totalPages
@@ -373,173 +1087,323 @@
       return;
     }
 
-    currentPage++;
-
-    renderPage(
-      currentPage
-    );
-  }
-
-  function clearPreview() {
-    hidePreview();
-
-    const elements =
-      getElements();
-
-    if (!elements.canvas) return;
-
-    const context =
-      elements.canvas.getContext(
-        "2d"
-      );
-
-    context.clearRect(
-      0,
-      0,
-      elements.canvas.width,
-      elements.canvas.height
+    goToPage(
+      currentPage + 1
     );
 
-    elements.thumbnails.innerHTML =
-      "";
   }
 
-  function watchFileList() {
-    const fileList =
-      $("#fileList");
-
-    if (!fileList) return;
-
-    const observer =
-      new MutationObserver(() => {
-
-        const files =
-          window.__pdfLuxeSelectedFiles ||
-          [];
-
-        if (
-          files.length === 0
-        ) {
-          clearPreview();
-        }
-
-      });
-
-    observer.observe(
-      fileList,
-      {
-        childList: true,
-        subtree: true
-      }
-    );
-  }
-
-  function hookIntoFileInput() {
-    const fileInput =
-      $("#fileInput");
-
-    if (!fileInput) return;
-
-    fileInput.addEventListener(
-      "change",
-      () => {
-
-        const file =
-          fileInput.files?.[0];
-
-        if (file) {
-          loadPreview(file);
-        }
-
-      }
-    );
-  }
+  /* ---------------------------------------------------------
+     BUTTONS
+  --------------------------------------------------------- */
 
   function hookButtons() {
+
     const elements =
       getElements();
 
+    if (elements.prev) {
+
+      elements.prev.addEventListener(
+        "click",
+        previousPage
+      );
+
+    }
+
+    if (elements.next) {
+
+      elements.next.addEventListener(
+        "click",
+        nextPage
+      );
+
+    }
+
+    if (elements.prevBottom) {
+
+      elements.prevBottom.addEventListener(
+        "click",
+        previousPage
+      );
+
+    }
+
+    if (elements.nextBottom) {
+
+      elements.nextBottom.addEventListener(
+        "click",
+        nextPage
+      );
+
+    }
+
+  }
+
+  /* ---------------------------------------------------------
+     KEYBOARD NAVIGATION
+  --------------------------------------------------------- */
+
+  function hookKeyboard() {
+
     if (
-      !elements.prev ||
-      !elements.next
+      keyboardHandlerAttached
     ) {
       return;
     }
 
-    elements.prev.addEventListener(
-      "click",
-      previousPage
-    );
-
-    elements.next.addEventListener(
-      "click",
-      nextPage
-    );
-
-    elements.prevBottom.addEventListener(
-      "click",
-      previousPage
-    );
-
-    elements.nextBottom.addEventListener(
-      "click",
-      nextPage
-    );
+    keyboardHandlerAttached =
+      true;
 
     document.addEventListener(
       "keydown",
       event => {
 
         if (
-          !pdfDocument ||
+          !pdfDocument
+        ) {
+          return;
+        }
+
+        const elements =
+          getElements();
+
+        if (
+          !elements.preview ||
           elements.preview.hidden
         ) {
           return;
         }
 
+        /*
+         * Don't hijack keyboard controls
+         * while typing into an input.
+         */
+
+        const active =
+          document.activeElement;
+
+        const tag =
+          active?.tagName;
+
         if (
-          event.key === "ArrowLeft"
+          tag === "INPUT" ||
+          tag === "TEXTAREA" ||
+          tag === "SELECT"
         ) {
-          previousPage();
+          return;
         }
 
         if (
-          event.key === "ArrowRight"
+          event.key ===
+          "ArrowLeft"
         ) {
+
+          event.preventDefault();
+
+          previousPage();
+
+        }
+
+        if (
+          event.key ===
+          "ArrowRight"
+        ) {
+
+          event.preventDefault();
+
           nextPage();
+
+        }
+
+        if (
+          event.key ===
+          "Home"
+        ) {
+
+          event.preventDefault();
+
+          goToPage(
+            1
+          );
+
+        }
+
+        if (
+          event.key ===
+          "End"
+        ) {
+
+          event.preventDefault();
+
+          goToPage(
+            totalPages
+          );
+
         }
 
       }
     );
+
   }
 
+  /* ---------------------------------------------------------
+     RESPONSIVE RERENDER
+  --------------------------------------------------------- */
+
+  function hookResize() {
+
+    let timer = null;
+
+    window.addEventListener(
+      "resize",
+      () => {
+
+        clearTimeout(
+          timer
+        );
+
+        timer =
+          setTimeout(
+            () => {
+
+              if (
+                pdfDocument &&
+                currentPage
+              ) {
+
+                renderPage(
+                  currentPage
+                );
+
+              }
+
+            },
+            180
+          );
+
+      }
+    );
+
+  }
+
+  /* ---------------------------------------------------------
+     FILE INPUT FALLBACK
+  --------------------------------------------------------- */
+
+  function hookFileInput() {
+
+    const fileInput =
+      $("#fileInput");
+
+    if (!fileInput) {
+      return;
+    }
+
+    fileInput.addEventListener(
+      "change",
+      event => {
+
+        const file =
+          event.target
+            ?.files?.[0];
+
+        if (file) {
+
+          loadPreview(
+            file
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+  /* ---------------------------------------------------------
+     INITIALIZATION
+  --------------------------------------------------------- */
+
   function initialize() {
+
+    if (initialized) {
+      return;
+    }
+
+    initialized =
+      true;
+
     const elements =
       getElements();
 
     if (!elements.preview) {
+
+      console.warn(
+        "PDFLuxe: Preview UI not found. Preview engine waiting for #documentPreview."
+      );
+
       return;
+
     }
 
     hidePreview();
 
     hookButtons();
 
-    hookIntoFileInput();
+    hookKeyboard();
 
-    watchFileList();
+    hookResize();
+
+    /*
+     * This fallback allows the preview
+     * to work even if app.js is changed.
+     */
+
+    hookFileInput();
+
   }
 
-  /*
-   * Public API
-   */
+  /* ---------------------------------------------------------
+     PUBLIC API
+  --------------------------------------------------------- */
 
   window.PDFLuxePreview = {
-    load: loadPreview,
-    clear: clearPreview,
-    next: nextPage,
-    previous: previousPage
+
+    open:
+      loadPreview,
+
+    load:
+      loadPreview,
+
+    clear:
+      clearPreview,
+
+    next:
+      nextPage,
+
+    previous:
+      previousPage,
+
+    goToPage,
+
+    getCurrentPage:
+      () =>
+        currentPage,
+
+    getTotalPages:
+      () =>
+        totalPages,
+
+    getCurrentFile:
+      () =>
+        currentFile
+
   };
+
+  /* ---------------------------------------------------------
+     START
+  --------------------------------------------------------- */
 
   if (
     document.readyState ===
@@ -548,7 +1412,10 @@
 
     document.addEventListener(
       "DOMContentLoaded",
-      initialize
+      initialize,
+      {
+        once: true
+      }
     );
 
   } else {
