@@ -5,7 +5,18 @@
    * =========================================================
    * PDFLUXE PREMIUM — APPLICATION ENGINE
    * =========================================================
+   * Works with:
+   *   index.html
+   *   js/app.js
+   *   js/pdf-preview.js
+   *   PDF-Lib
+   *   PDF.js
+   * =========================================================
    */
+
+  /* =========================================================
+     LIBRARY CHECK
+  ========================================================= */
 
   if (!window.PDFLib) {
     console.error(
@@ -21,17 +32,19 @@
     StandardFonts
   } = window.PDFLib;
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      STATE
-  --------------------------------------------------------- */
+  ========================================================= */
 
   let selectedFiles = [];
   let currentTool = "merge";
   let isProcessing = false;
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      TOOL CONFIGURATION
-  --------------------------------------------------------- */
+  ========================================================= */
 
   const toolConfig = {
 
@@ -121,9 +134,10 @@
 
   };
 
-  /* ---------------------------------------------------------
-     HELPERS
-  --------------------------------------------------------- */
+
+  /* =========================================================
+     DOM HELPERS
+  ========================================================= */
 
   const $ = selector =>
     document.querySelector(selector);
@@ -131,28 +145,43 @@
   const $$ = selector =>
     [...document.querySelectorAll(selector)];
 
-  function getElement(id) {
-    return document.getElementById(id);
-  }
+  const getElement = id =>
+    document.getElementById(id);
+
+
+  /* =========================================================
+     NAVIGATION
+  ========================================================= */
 
   function scrollToSection(id) {
+
     const element =
       getElement(id);
 
-    if (!element) return;
+    if (!element) {
+      return;
+    }
 
     element.scrollIntoView({
       behavior: "smooth",
       block: "start"
     });
+
   }
+
+
+  /* =========================================================
+     TOAST
+  ========================================================= */
 
   function showToast(message) {
 
     const toast =
       getElement("toast");
 
-    if (!toast) return;
+    if (!toast) {
+      return;
+    }
 
     toast.textContent =
       message;
@@ -175,6 +204,11 @@
       }, 2600);
 
   }
+
+
+  /* =========================================================
+     GENERAL HELPERS
+  ========================================================= */
 
   function escapeHtml(value) {
 
@@ -206,6 +240,7 @@
       );
 
   }
+
 
   function formatFileSize(bytes) {
 
@@ -239,6 +274,7 @@
 
   }
 
+
   function isPDF(file) {
 
     if (!file) {
@@ -254,32 +290,54 @@
 
   }
 
-  /* ---------------------------------------------------------
-     PREVIEW CONNECTION
-  --------------------------------------------------------- */
+
+  /* =========================================================
+     PREVIEW ENGINE CONNECTION
+  =========================================================
+     IMPORTANT:
+     pdf-preview.js exposes:
+       PDFLuxePreview.load()
+       PDFLuxePreview.clear()
+
+     NOT PDFLuxePreview.open()
+  ========================================================= */
 
   function clearPreview() {
 
     if (
       window.PDFLuxePreview &&
-      typeof PDFLuxePreview.clear ===
+      typeof window.PDFLuxePreview.clear ===
         "function"
     ) {
 
-      PDFLuxePreview.clear();
+      try {
+
+        window.PDFLuxePreview.clear();
+
+      } catch (error) {
+
+        console.warn(
+          "PDFLuxe preview clear error:",
+          error
+        );
+
+      }
 
     }
 
   }
 
+
   function syncPreview() {
 
     if (
       !window.PDFLuxePreview ||
-      typeof PDFLuxePreview.open !==
+      typeof window.PDFLuxePreview.load !==
         "function"
     ) {
+
       return;
+
     }
 
     if (!selectedFiles.length) {
@@ -287,11 +345,12 @@
       clearPreview();
 
       return;
+
     }
 
     try {
 
-      PDFLuxePreview.open(
+      window.PDFLuxePreview.load(
         selectedFiles[0]
       );
 
@@ -306,9 +365,10 @@
 
   }
 
-  /* ---------------------------------------------------------
-     FILE RENDERING
-  --------------------------------------------------------- */
+
+  /* =========================================================
+     FILE LIST
+  ========================================================= */
 
   function renderFiles() {
 
@@ -320,10 +380,6 @@
     }
 
     list.innerHTML = "";
-
-    if (!selectedFiles.length) {
-      return;
-    }
 
     selectedFiles.forEach(
       (file, index) => {
@@ -380,6 +436,7 @@
 
   }
 
+
   function updateStatus(
     customMessage = null
   ) {
@@ -397,6 +454,7 @@
         customMessage;
 
       return;
+
     }
 
     if (!selectedFiles.length) {
@@ -405,6 +463,7 @@
         "Your files stay in this browser. Nothing is uploaded.";
 
       return;
+
     }
 
     const count =
@@ -417,13 +476,17 @@
 
   }
 
+
   function removeFile(index) {
 
     if (
+      !Number.isInteger(index) ||
       index < 0 ||
       index >= selectedFiles.length
     ) {
+
       return;
+
     }
 
     selectedFiles.splice(
@@ -438,9 +501,26 @@
 
   }
 
-  /* ---------------------------------------------------------
-     TOOL MANAGEMENT
-  --------------------------------------------------------- */
+
+  /* =========================================================
+     TOOL UI
+  ========================================================= */
+
+  function updateActiveTool(tool) {
+
+    $$(".tool")
+      .forEach(button => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.tool ===
+            tool
+        );
+
+      });
+
+  }
+
 
   function updateToolUI(tool) {
 
@@ -466,56 +546,74 @@
       getElement("dropHint");
 
     const actionButton =
-      getElement(
-        "actionButton"
-      );
+      getElement("actionButton");
 
     const fileInput =
-      getElement(
-        "fileInput"
-      );
+      getElement("fileInput");
 
     const extraControls =
-      getElement(
-        "extraControls"
-      );
+      getElement("extraControls");
+
 
     if (title) {
+
       title.textContent =
         config.title;
+
     }
+
 
     if (description) {
+
       description.textContent =
         config.description;
+
     }
+
 
     if (dropTitle) {
+
       dropTitle.textContent =
         config.dropTitle;
+
     }
+
 
     if (dropHint) {
+
       dropHint.textContent =
         config.hint;
+
     }
+
 
     if (actionButton) {
+
       actionButton.textContent =
         config.action;
+
     }
 
+
     if (fileInput) {
+
       fileInput.multiple =
         config.multiple;
+
     }
+
 
     if (extraControls) {
 
       extraControls.innerHTML =
         "";
 
-      if (tool === "split") {
+
+      /* SPLIT */
+
+      if (
+        tool === "split"
+      ) {
 
         extraControls.innerHTML = `
 
@@ -533,7 +631,12 @@
 
       }
 
-      if (tool === "watermark") {
+
+      /* WATERMARK */
+
+      if (
+        tool === "watermark"
+      ) {
 
         extraControls.innerHTML = `
 
@@ -556,9 +659,14 @@
 
   }
 
+
   function setTool(tool) {
 
     if (!toolConfig[tool]) {
+      return;
+    }
+
+    if (isProcessing) {
       return;
     }
 
@@ -566,6 +674,13 @@
       tool;
 
     selectedFiles = [];
+
+    const fileInput =
+      getElement("fileInput");
+
+    if (fileInput) {
+      fileInput.value = "";
+    }
 
     clearPreview();
 
@@ -575,32 +690,18 @@
       tool
     );
 
-    updateStatus();
-
     updateActiveTool(
       tool
     );
 
-  }
-
-  function updateActiveTool(tool) {
-
-    $$(".tool")
-      .forEach(button => {
-
-        button.classList.toggle(
-          "active",
-          button.dataset.tool ===
-            tool
-        );
-
-      });
+    updateStatus();
 
   }
 
-  /* ---------------------------------------------------------
-     FILE INPUT
-  --------------------------------------------------------- */
+
+  /* =========================================================
+     FILE SELECTION
+  ========================================================= */
 
   function addFiles(fileList) {
 
@@ -623,7 +724,11 @@
       );
 
       return;
+
     }
+
+
+    /* MERGE */
 
     if (
       currentTool ===
@@ -633,7 +738,12 @@
       selectedFiles =
         pdfs;
 
-    } else {
+    }
+
+
+    /* ALL OTHER TOOLS */
+
+    else {
 
       selectedFiles =
         [pdfs[0]];
@@ -650,6 +760,7 @@
 
     }
 
+
     renderFiles();
 
     updateStatus();
@@ -658,30 +769,34 @@
 
   }
 
-  /* ---------------------------------------------------------
-     PDF LOADING
-  --------------------------------------------------------- */
+
+  /* =========================================================
+     LOAD PDF-LIB DOCUMENT
+  ========================================================= */
 
   async function loadPDF(file) {
 
     if (!file) {
+
       throw new Error(
         "No PDF selected."
       );
+
     }
 
-    const bytes =
+    const buffer =
       await file.arrayBuffer();
 
     return PDFDocument.load(
-      bytes
+      buffer
     );
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      DOWNLOAD
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function downloadPDF(
     bytes,
@@ -724,28 +839,25 @@
 
     anchor.remove();
 
-    setTimeout(
-      () => {
+    setTimeout(() => {
 
-        URL.revokeObjectURL(
-          url
-        );
+      URL.revokeObjectURL(
+        url
+      );
 
-      },
-      1500
-    );
+    }, 1500);
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      MERGE
-  --------------------------------------------------------- */
+  ========================================================= */
 
   async function mergePDFs() {
 
     if (
-      selectedFiles.length <
-      2
+      selectedFiles.length < 2
     ) {
 
       showToast(
@@ -762,6 +874,7 @@
 
     const output =
       await PDFDocument.create();
+
 
     for (
       const file of
@@ -780,13 +893,17 @@
         );
 
       pages.forEach(
-        page =>
+        page => {
+
           output.addPage(
             page
-          )
+          );
+
+        }
       );
 
     }
+
 
     const bytes =
       await output.save({
@@ -794,10 +911,12 @@
           true
       });
 
+
     downloadPDF(
       bytes,
       "PDFLuxe-merged.pdf"
     );
+
 
     showToast(
       "Merged PDF ready ✓"
@@ -809,9 +928,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      PAGE RANGE PARSER
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function parsePageNumbers(
     value,
@@ -824,8 +944,11 @@
       !value ||
       !totalPages
     ) {
+
       return pages;
+
     }
+
 
     value
       .split(",")
@@ -835,6 +958,8 @@
       )
       .filter(Boolean)
       .forEach(item => {
+
+        /* RANGE */
 
         if (
           item.includes("-")
@@ -847,18 +972,22 @@
                 Number
               );
 
+
           if (
-            parts.length !==
-            2
+            parts.length !== 2
           ) {
+
             return;
+
           }
+
 
           let start =
             parts[0];
 
           let end =
             parts[1];
+
 
           if (
             !Number.isFinite(
@@ -868,8 +997,11 @@
               end
             )
           ) {
+
             return;
+
           }
+
 
           if (
             start > end
@@ -884,6 +1016,7 @@
             ];
 
           }
+
 
           for (
             let page =
@@ -905,7 +1038,12 @@
 
           }
 
-        } else {
+        }
+
+
+        /* SINGLE PAGE */
+
+        else {
 
           const page =
             Number(item);
@@ -928,6 +1066,7 @@
 
       });
 
+
     return [
       ...new Set(
         pages
@@ -936,9 +1075,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      SPLIT
-  --------------------------------------------------------- */
+  ========================================================= */
 
   async function splitPDF() {
 
@@ -958,25 +1098,30 @@
       "Preparing selected pages…"
     );
 
+
     const source =
       await loadPDF(
         selectedFiles[0]
       );
+
 
     const input =
       getElement(
         "pageRange"
       );
 
+
     const value =
       input?.value.trim() ||
       "1";
+
 
     const indexes =
       parsePageNumbers(
         value,
         source.getPageCount()
       );
+
 
     if (!indexes.length) {
 
@@ -990,8 +1135,10 @@
 
     }
 
+
     const output =
       await PDFDocument.create();
+
 
     const pages =
       await output.copyPages(
@@ -999,12 +1146,17 @@
         indexes
       );
 
+
     pages.forEach(
-      page =>
+      page => {
+
         output.addPage(
           page
-        )
+        );
+
+      }
     );
+
 
     const bytes =
       await output.save({
@@ -1012,14 +1164,17 @@
           true
       });
 
+
     downloadPDF(
       bytes,
       "PDFLuxe-split.pdf"
     );
 
+
     showToast(
       "Pages extracted ✓"
     );
+
 
     updateStatus(
       "Split PDF downloaded successfully."
@@ -1027,9 +1182,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      COMPRESS / OPTIMIZE
-     --------------------------------------------------------- */
+  ========================================================= */
 
   async function compressPDF() {
 
@@ -1045,38 +1201,46 @@
 
     }
 
+
     updateStatus(
       "Optimizing your PDF…"
     );
+
 
     const source =
       await loadPDF(
         selectedFiles[0]
       );
 
+
     /*
+     * NOTE:
      * pdf-lib does not perform true image
-     * recompression. This saves the document
-     * using object streams to reduce structural
-     * overhead where possible.
+     * recompression. This operation rewrites
+     * the PDF using object streams and can
+     * reduce structural overhead.
      */
 
     const bytes =
       await source.save({
         useObjectStreams:
           true,
+
         addDefaultPage:
           false
       });
+
 
     downloadPDF(
       bytes,
       "PDFLuxe-optimized.pdf"
     );
 
+
     showToast(
       "Optimized PDF ready ✓"
     );
+
 
     updateStatus(
       "Optimized PDF downloaded successfully."
@@ -1084,9 +1248,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      WATERMARK
-  --------------------------------------------------------- */
+  ========================================================= */
 
   async function watermarkPDF() {
 
@@ -1102,28 +1267,34 @@
 
     }
 
+
     updateStatus(
       "Applying watermark…"
     );
+
 
     const source =
       await loadPDF(
         selectedFiles[0]
       );
 
+
     const font =
       await source.embedFont(
         StandardFonts.HelveticaBold
       );
+
 
     const input =
       getElement(
         "watermarkText"
       );
 
+
     const text =
       input?.value.trim() ||
       "PDFLuxe Premium";
+
 
     source
       .getPages()
@@ -1135,11 +1306,23 @@
         } =
           page.getSize();
 
+
+        const fontSize =
+          Math.max(
+            20,
+            Math.min(
+              34,
+              width / 18
+            )
+          );
+
+
         const textWidth =
           font.widthOfTextAtSize(
             text,
-            25
+            fontSize
           );
+
 
         page.drawText(
           text,
@@ -1147,14 +1330,13 @@
 
             x:
               (width -
-                textWidth) /
-              2,
+                textWidth) / 2,
 
             y:
               height / 2,
 
             size:
-              25,
+              fontSize,
 
             font,
 
@@ -1176,20 +1358,24 @@
 
       });
 
+
     const bytes =
       await source.save({
         useObjectStreams:
           true
       });
 
+
     downloadPDF(
       bytes,
       "PDFLuxe-watermarked.pdf"
     );
 
+
     showToast(
       "Watermark applied ✓"
     );
+
 
     updateStatus(
       "Watermarked PDF downloaded successfully."
@@ -1197,9 +1383,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      PAGE NUMBERS
-  --------------------------------------------------------- */
+  ========================================================= */
 
   async function numberPDF() {
 
@@ -1215,19 +1402,23 @@
 
     }
 
+
     updateStatus(
       "Adding page numbers…"
     );
+
 
     const source =
       await loadPDF(
         selectedFiles[0]
       );
 
+
     const font =
       await source.embedFont(
         StandardFonts.Helvetica
       );
+
 
     source
       .getPages()
@@ -1239,16 +1430,23 @@
           } =
             page.getSize();
 
+
           const number =
             String(
               index + 1
             );
 
+
+          const fontSize =
+            10;
+
+
           const textWidth =
             font.widthOfTextAtSize(
               number,
-              10
+              fontSize
             );
+
 
           page.drawText(
             number,
@@ -1256,14 +1454,13 @@
 
               x:
                 (width -
-                  textWidth) /
-                2,
+                  textWidth) / 2,
 
               y:
                 18,
 
               size:
-                10,
+                fontSize,
 
               font,
 
@@ -1280,20 +1477,24 @@
         }
       );
 
+
     const bytes =
       await source.save({
         useObjectStreams:
           true
       });
 
+
     downloadPDF(
       bytes,
       "PDFLuxe-numbered.pdf"
     );
 
+
     showToast(
       "Page numbers added ✓"
     );
+
 
     updateStatus(
       "Numbered PDF downloaded successfully."
@@ -1301,9 +1502,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      ROTATE
-  --------------------------------------------------------- */
+  ========================================================= */
 
   async function rotatePDF() {
 
@@ -1319,14 +1521,17 @@
 
     }
 
+
     updateStatus(
       "Rotating pages…"
     );
+
 
     const source =
       await loadPDF(
         selectedFiles[0]
       );
+
 
     source
       .getPages()
@@ -1337,17 +1542,18 @@
             .getRotation()
             .angle;
 
+
         page.setRotation(
           degrees(
             (
               current +
               90
-            ) %
-              360
+            ) % 360
           )
         );
 
       });
+
 
     const bytes =
       await source.save({
@@ -1355,14 +1561,17 @@
           true
       });
 
+
     downloadPDF(
       bytes,
       "PDFLuxe-rotated.pdf"
     );
 
+
     showToast(
       "PDF rotated ✓"
     );
+
 
     updateStatus(
       "Rotated PDF downloaded successfully."
@@ -1370,9 +1579,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      RUN CURRENT TOOL
-  --------------------------------------------------------- */
+  ========================================================= */
 
   async function runCurrentTool() {
 
@@ -1380,17 +1590,22 @@
       return;
     }
 
+
     isProcessing =
       true;
+
 
     const actionButton =
       getElement(
         "actionButton"
       );
 
-    const originalText =
-      actionButton
-        ?.textContent;
+
+    const config =
+      toolConfig[
+        currentTool
+      ];
+
 
     if (actionButton) {
 
@@ -1408,6 +1623,7 @@
 
     }
 
+
     try {
 
       switch (
@@ -1415,30 +1631,49 @@
       ) {
 
         case "merge":
+
           await mergePDFs();
+
           break;
+
 
         case "split":
+
           await splitPDF();
+
           break;
+
 
         case "compress":
+
           await compressPDF();
+
           break;
+
 
         case "watermark":
+
           await watermarkPDF();
+
           break;
+
 
         case "numbers":
+
           await numberPDF();
+
           break;
+
 
         case "rotate":
+
           await rotatePDF();
+
           break;
 
+
         default:
+
           throw new Error(
             "Unknown PDF tool."
           );
@@ -1452,9 +1687,11 @@
         error
       );
 
+
       showToast(
         "Something went wrong. Try another PDF."
       );
+
 
       updateStatus();
 
@@ -1462,6 +1699,7 @@
 
       isProcessing =
         false;
+
 
       if (actionButton) {
 
@@ -1475,10 +1713,9 @@
           "";
 
         actionButton.textContent =
-          originalText ||
-          toolConfig[
-            currentTool
-          ].action;
+          config
+            ? config.action
+            : "Run";
 
       }
 
@@ -1486,22 +1723,34 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      CLEAR WORKSPACE
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function clearWorkspace() {
 
+    if (isProcessing) {
+      return;
+    }
+
+
     selectedFiles = [];
+
 
     const fileInput =
       getElement(
         "fileInput"
       );
 
+
     if (fileInput) {
-      fileInput.value = "";
+
+      fileInput.value =
+        "";
+
     }
+
 
     renderFiles();
 
@@ -1509,15 +1758,17 @@
 
     clearPreview();
 
+
     showToast(
       "Workspace cleared"
     );
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      TOOL BUTTONS
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeToolButtons() {
 
@@ -1539,9 +1790,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      TOOL CARDS
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeToolCards() {
 
@@ -1555,9 +1807,11 @@
             const tool =
               card.dataset.jump;
 
+
             scrollToSection(
               "workspace"
             );
+
 
             setTimeout(
               () => {
@@ -1567,7 +1821,7 @@
                 );
 
               },
-              300
+              350
             );
 
           }
@@ -1577,9 +1831,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      FILE LIST EVENTS
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeFileList() {
 
@@ -1588,9 +1843,11 @@
         "fileList"
       );
 
+
     if (!fileList) {
       return;
     }
+
 
     fileList.addEventListener(
       "click",
@@ -1601,15 +1858,18 @@
             "[data-remove-file]"
           );
 
+
         if (!button) {
           return;
         }
+
 
         const index =
           Number(
             button.dataset
               .removeFile
           );
+
 
         removeFile(
           index
@@ -1620,9 +1880,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      DROP ZONE
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeDropZone() {
 
@@ -1631,17 +1892,24 @@
         "dropZone"
       );
 
+
     const fileInput =
       getElement(
         "fileInput"
       );
 
+
     if (
       !dropZone ||
       !fileInput
     ) {
+
       return;
+
     }
+
+
+    /* CLICK */
 
     dropZone.addEventListener(
       "click",
@@ -1652,13 +1920,24 @@
             "input"
           )
         ) {
+
+          return;
+
+        }
+
+
+        if (isProcessing) {
           return;
         }
+
 
         fileInput.click();
 
       }
     );
+
+
+    /* FILE INPUT */
 
     fileInput.addEventListener(
       "change",
@@ -1668,11 +1947,20 @@
           event.target.files
         );
 
+
+        /*
+         * Reset value so selecting
+         * the same file again works.
+         */
+
         fileInput.value =
           "";
 
       }
     );
+
+
+    /* DRAG ENTER / OVER */
 
     [
       "dragenter",
@@ -1687,15 +1975,23 @@
             event.preventDefault();
             event.stopPropagation();
 
-            dropZone.classList.add(
-              "dragging"
-            );
+
+            if (!isProcessing) {
+
+              dropZone.classList.add(
+                "dragging"
+              );
+
+            }
 
           }
         );
 
       }
     );
+
+
+    /* DRAG LEAVE / DROP */
 
     [
       "dragleave",
@@ -1710,6 +2006,7 @@
             event.preventDefault();
             event.stopPropagation();
 
+
             dropZone.classList.remove(
               "dragging"
             );
@@ -1720,19 +2017,30 @@
       }
     );
 
+
+    /* DROP */
+
     dropZone.addEventListener(
       "drop",
       event => {
+
+        if (isProcessing) {
+          return;
+        }
+
 
         const files =
           event
             .dataTransfer
             ?.files;
 
+
         if (files) {
+
           addFiles(
             files
           );
+
         }
 
       }
@@ -1740,9 +2048,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      CLEAR BUTTON
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeClearButton() {
 
@@ -1751,9 +2060,11 @@
         "clearButton"
       );
 
+
     if (!button) {
       return;
     }
+
 
     button.addEventListener(
       "click",
@@ -1762,9 +2073,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      ACTION BUTTON
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeActionButton() {
 
@@ -1773,9 +2085,11 @@
         "actionButton"
       );
 
+
     if (!button) {
       return;
     }
+
 
     button.addEventListener(
       "click",
@@ -1784,9 +2098,10 @@
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      KEYBOARD SHORTCUTS
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initializeKeyboard() {
 
@@ -1794,10 +2109,15 @@
       "keydown",
       event => {
 
+        /*
+         * Ctrl + Enter / Cmd + Enter
+         * = Run current PDF tool
+         */
+
         if (
           (
-            event.metaKey ||
-            event.ctrlKey
+            event.ctrlKey ||
+            event.metaKey
           ) &&
           event.key === "Enter"
         ) {
@@ -1808,21 +2128,15 @@
 
         }
 
-        if (
-          event.key === "Escape" &&
-          isProcessing
-        ) {
-          return;
-        }
-
       }
     );
 
   }
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      PUBLIC API
-  --------------------------------------------------------- */
+  ========================================================= */
 
   window.PDFLuxe = {
 
@@ -1836,17 +2150,21 @@
 
     addFiles,
 
-    getSelectedFiles: () =>
-      [...selectedFiles],
+    getSelectedFiles:
+      () => [
+        ...selectedFiles
+      ],
 
-    getCurrentTool: () =>
-      currentTool
+    getCurrentTool:
+      () =>
+        currentTool
 
   };
 
-  /* ---------------------------------------------------------
+
+  /* =========================================================
      INITIALIZATION
-  --------------------------------------------------------- */
+  ========================================================= */
 
   function initialize() {
 
@@ -1855,10 +2173,12 @@
         "dropZone"
       );
 
+
     const fileInput =
       getElement(
         "fileInput"
       );
+
 
     if (
       !dropZone ||
@@ -1872,6 +2192,7 @@
       return;
 
     }
+
 
     initializeToolButtons();
 
@@ -1887,15 +2208,22 @@
 
     initializeKeyboard();
 
+
     setTool(
       "merge"
     );
+
 
     console.log(
       "PDFLuxe Premium application engine loaded ✓"
     );
 
   }
+
+
+  /* =========================================================
+     START
+  ========================================================= */
 
   if (
     document.readyState ===
