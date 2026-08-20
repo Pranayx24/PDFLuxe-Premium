@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="theme-color"
+    content="#08080b"
+  />
+
+  <meta
+    name="description"
+    content="PDFLuxe Premium privacy information."
+  />
+
+  <title>Privacy — PDFLuxe Premium</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: #fafafa;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(
+          800px 500px at 80% 0%,
+          rgba(139,92,246,.15),
+          transparent 60%
+        ),
+        radial-gradient(
+          700px 500px at 10% 10%,
+          rgba(244,199,107,.08),
+          transparent 60%
+        ),
+        #08080b;
+    }
+
+    .wrap {
+      width: min(900px, calc(100% - 32px));
+      margin: auto;
+    }
+
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid #202027;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 19px;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+
+      color: #17110a;
+      font-weight: 800;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff1c4,
+          #f4c76b,
+          #c88b28
+        );
+    }
+
+    .gold {
+      color: #f4c76b;
+    }
+
+    .back {
+      color: #aaaab4;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .back:hover {
+      color: white;
+    }
+
+    main {
+      padding: 75px 0;
+    }
+
+    .eyebrow {
+      color: #f4c76b;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 15px;
+      font-size: clamp(40px, 7vw, 64px);
+      line-height: 1;
+      letter-spacing: -3px;
+    }
+
+    .intro {
+      color: #9696a3;
+      font-size: 17px;
+      line-height: 1.7;
+      max-width: 680px;
+    }
+
+    .content {
+      margin-top: 50px;
+      padding: 30px;
+
+      border: 1px solid #282830;
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.045),
+          rgba(255,255,255,.015)
+        );
+
+      box-shadow:
+        0 25px 70px rgba(0,0,0,.35);
+    }
+
+    section {
+      padding: 10px 0 25px;
+    }
+
+    section + section {
+      border-top: 1px solid #24242b;
+      padding-top: 30px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+    }
+
+    p,
+    li {
+      color: #a2a2ad;
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    ul {
+      padding-left: 22px;
+    }
+
+    .highlight {
+      padding: 18px;
+
+      border: 1px solid rgba(244,199,107,.2);
+      border-radius: 14px;
+
+      background: rgba(244,199,107,.05);
+      color: #d6d6df;
+    }
+
+    footer {
+      padding: 30px 0 50px;
+      border-top: 1px solid #202027;
+      color: #666671;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 50px 0;
+      }
+
+      .content {
+        padding: 22px;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="wrap nav">
+
+      <div class="brand">
+        <div class="logo">P</div>
+        PDFLuxe <span class="gold">Premium</span>
+      </div>
+
+      <a class="back" href="./">
+        ← Back to PDFLuxe
+      </a>
+
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <div class="eyebrow">
+      PDFLUXE PREMIUM
+    </div>
+
+    <h1>
+      Privacy
+    </h1>
+
+    <p class="intro">
+      PDFLuxe Premium is designed around a simple principle:
+      your documents should remain yours.
+    </p>
+
+    <div class="content">
+
+      <section>
+
+        <h2>
+          Local-first processing
+        </h2>
+
+        <p>
+          PDFLuxe Premium is designed to process supported
+          PDF operations directly in your browser whenever
+          possible.
+        </p>
+
+        <div class="highlight">
+          Your selected documents are not intentionally
+          uploaded to a PDFLuxe server for the core
+          browser-based workflows.
+        </div>
+
+      </section>
+
+      <section>
+
+        <h2>
+          Files you select
+        </h2>
+
+        <p>
+          Files selected through the PDF workspace are
+          handled by the browser and the local JavaScript
+          processing environment.
+        </p>
+
+        <p>
+          When you download a processed document, the
+          resulting file is generated on your device.
+        </p>
+
+      </section>
+
+      <section>
+
+        <h2>
+          No account required
+        </h2>
+
+        <p>
+          The core PDF workspace does not require you to
+          create an account before using the browser-based
+          tools.
+        </p>
+
+      </section>
+
+      <section>
+
+        <h2>
+          Third-party services
+        </h2>
+
+        <p>
+          PDFLuxe Premium may use third-party libraries
+          or services required for application functionality,
+          such as PDF processing libraries and web fonts.
+        </p>
+
+        <p>
+          Those services may have their own privacy policies
+          and terms.
+        </p>
+
+      </section>
+
+      <section>
+
+        <h2>
+          Important limitation
+        </h2>
+
+        <p>
+          PDFLuxe Premium is an evolving project. This page
+          describes the intended privacy model of the
+          browser-based application and is not a legal
+          guarantee for future versions or third-party
+          integrations.
+        </p>
+
+      </section>
+
+      <section>
+
+        <h2>
+          Contact
+        </h2>
+
+        <p>
+          For questions about PDFLuxe Premium, use the
+          project's GitHub repository.
+        </p>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <strong style="color:#aaaab4">
+        PDFLuxe Premium
+      </strong>
+      · Your PDF, elevated.
+    </div>
+  </footer>
+
+</body>
+</html>
