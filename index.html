@@ -2,97 +2,115 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#08080b" />
-  <title>PDFLuxe Premium — Your PDF, Elevated.</title>
 
-<meta
-  name="description"
-  content="PDFLuxe Premium is a fast, beautiful and privacy-first PDF workspace for merging, splitting, compressing, watermarking and managing PDF documents."
-/>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-<meta
-  name="keywords"
-  content="PDF editor, PDF tools, merge PDF, split PDF, compress PDF, PDFLuxe, PDF editor online, PDF tools online"
-/>
-
-<meta name="author" content="Pranayx24" />
-
-<meta
-  name="robots"
-  content="index, follow, max-image-preview:large"
-/>
-
-<link
-  rel="canonical"
-  href="https://pranayx24.github.io/PDFLuxe-Premium/"
-/>
-
-<!-- Open Graph -->
-
-<meta
-  property="og:type"
-  content="website"
-/>
-
-<meta
-  property="og:title"
-  content="PDFLuxe Premium — Your PDF, Elevated."
-/>
-
-<meta
-  property="og:description"
-  content="A beautiful, fast and privacy-first PDF workspace."
-/>
-
-<meta
-  property="og:url"
-  content="https://pranayx24.github.io/PDFLuxe-Premium/"
-/>
-
-<meta
-  property="og:site_name"
-  content="PDFLuxe Premium"
-/>
-
-<!-- Twitter / X -->
-
-<meta
-  name="twitter:card"
-  content="summary_large_image"
-/>
-
-<meta
-  name="twitter:title"
-  content="PDFLuxe Premium — Your PDF, Elevated."
-/>
-
-<meta
-  name="twitter:description"
-  content="A beautiful, fast and privacy-first PDF workspace."
-/>
-
-<!-- Mobile -->
-
-<meta
-  name="apple-mobile-web-app-capable"
-  content="yes"
-/>
-
-<meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="black-translucent"
-/>
-
-<meta
-  name="apple-mobile-web-app-title"
-  content="PDFLuxe"
-/>
+  <meta
+    name="theme-color"
+    content="#08080b"
+  />
 
   <title>PDFLuxe Premium — Your PDF, Elevated.</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta
+    name="description"
+    content="PDFLuxe Premium is a fast, beautiful and privacy-first PDF workspace for merging, splitting, compressing, watermarking and managing PDF documents."
+  />
+
+  <meta
+    name="keywords"
+    content="PDF editor, PDF tools, merge PDF, split PDF, compress PDF, PDFLuxe, PDF editor online, PDF tools online"
+  />
+
+  <meta
+    name="author"
+    content="Pranayx24"
+  />
+
+  <meta
+    name="robots"
+    content="index, follow, max-image-preview:large"
+  />
+
+  <link
+    rel="canonical"
+    href="https://pranayx24.github.io/PDFLuxe-Premium/"
+  />
+
+  <!-- Open Graph -->
+
+  <meta
+    property="og:type"
+    content="website"
+  />
+
+  <meta
+    property="og:title"
+    content="PDFLuxe Premium — Your PDF, Elevated."
+  />
+
+  <meta
+    property="og:description"
+    content="A beautiful, fast and privacy-first PDF workspace."
+  />
+
+  <meta
+    property="og:url"
+    content="https://pranayx24.github.io/PDFLuxe-Premium/"
+  />
+
+  <meta
+    property="og:site_name"
+    content="PDFLuxe Premium"
+  />
+
+  <!-- Twitter / X -->
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  />
+
+  <meta
+    name="twitter:title"
+    content="PDFLuxe Premium — Your PDF, Elevated."
+  />
+
+  <meta
+    name="twitter:description"
+    content="A beautiful, fast and privacy-first PDF workspace."
+  />
+
+  <!-- Mobile -->
+
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  />
+
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  />
+
+  <meta
+    name="apple-mobile-web-app-title"
+    content="PDFLuxe"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
@@ -102,28 +120,6 @@
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 
   <style>
-    .footer-links {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.footer-links a {
-  color: #777783;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.footer-links a:hover {
-  color: #f4c76b;
-}
-
-@media (max-width: 600px) {
-  .footer-links {
-    margin-top: 12px;
-    flex-wrap: wrap;
-  }
-}
     :root {
       --bg: #08080b;
       --panel: #121217;
@@ -150,6 +146,7 @@
       margin: 0;
       color: var(--text);
       font-family: "DM Sans", sans-serif;
+
       background:
         radial-gradient(
           800px 500px at 80% 0%,
@@ -162,6 +159,7 @@
           transparent 60%
         ),
         var(--bg);
+
       min-height: 100vh;
     }
 
@@ -170,11 +168,26 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
+
       background-image:
-        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+        linear-gradient(
+          rgba(255,255,255,0.018) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,0.018) 1px,
+          transparent 1px
+        );
+
       background-size: 64px 64px;
-      mask-image: linear-gradient(to bottom, black, transparent 75%);
+
+      mask-image:
+        linear-gradient(
+          to bottom,
+          black,
+          transparent 75%
+        );
     }
 
     button,
@@ -188,7 +201,11 @@
     }
 
     .wrap {
-      width: min(1160px, calc(100% - 32px));
+      width: min(
+        1160px,
+        calc(100% - 32px)
+      );
+
       margin: auto;
     }
 
@@ -199,13 +216,19 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(8, 8, 11, 0.78);
+
+      background:
+        rgba(8, 8, 11, 0.78);
+
       backdrop-filter: blur(20px);
-      border-bottom: 1px solid #18181e;
+
+      border-bottom:
+        1px solid #18181e;
     }
 
     .nav-inner {
       height: 100%;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -215,25 +238,37 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font: 700 20px "Space Grotesk", sans-serif;
+
+      font:
+        700 20px "Space Grotesk",
+        sans-serif;
+
       letter-spacing: -0.5px;
     }
 
     .logo {
       width: 36px;
       height: 36px;
+
       border-radius: 11px;
+
       display: grid;
       place-items: center;
+
       color: #16110a;
       font-weight: 700;
-      background: linear-gradient(
-        135deg,
-        #fff1c4,
-        #f4c76b 55%,
-        #d99f3b
-      );
-      box-shadow: 0 8px 30px rgba(244, 199, 107, 0.18);
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff1c4,
+          #f4c76b 55%,
+          #d99f3b
+        );
+
+      box-shadow:
+        0 8px 30px
+        rgba(244, 199, 107, 0.18);
     }
 
     .gold {
@@ -243,29 +278,46 @@
     /* BUTTONS */
 
     .btn {
-      border: 1px solid var(--line);
-      background: var(--panel-soft);
+      border:
+        1px solid var(--line);
+
+      background:
+        var(--panel-soft);
+
       color: white;
+
       padding: 12px 17px;
+
       border-radius: 12px;
+
       font-weight: 700;
+
       transition: 0.2s ease;
     }
 
     .btn:hover {
-      transform: translateY(-2px);
-      border-color: #44444e;
+      transform:
+        translateY(-2px);
+
+      border-color:
+        #44444e;
     }
 
     .btn.primary {
       border: 0;
+
       color: #17110a;
-      background: linear-gradient(
-        135deg,
-        #ffe6a0,
-        #d99f3b
-      );
-      box-shadow: 0 12px 35px rgba(244, 199, 107, 0.16);
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffe6a0,
+          #d99f3b
+        );
+
+      box-shadow:
+        0 12px 35px
+        rgba(244, 199, 107, 0.16);
     }
 
     /* HERO */
@@ -279,64 +331,98 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
+
       padding: 8px 13px;
+
       border-radius: 99px;
-      border: 1px solid rgba(244, 199, 107, 0.25);
-      background: rgba(244, 199, 107, 0.07);
+
+      border:
+        1px solid
+        rgba(244, 199, 107, 0.25);
+
+      background:
+        rgba(244, 199, 107, 0.07);
+
       color: var(--gold-light);
+
       font-size: 12px;
       font-weight: 700;
+
       letter-spacing: 0.3px;
     }
 
     .badge-dot {
       width: 7px;
       height: 7px;
+
       border-radius: 50%;
-      background: var(--gold);
-      box-shadow: 0 0 15px var(--gold);
+
+      background:
+        var(--gold);
+
+      box-shadow:
+        0 0 15px var(--gold);
     }
 
     h1 {
-      font: 700 clamp(48px, 8vw, 86px) / 0.95 "Space Grotesk", sans-serif;
+      font:
+        700 clamp(48px, 8vw, 86px) / 0.95
+        "Space Grotesk",
+        sans-serif;
+
       letter-spacing: -4px;
+
       margin: 22px 0;
     }
 
     h1 span {
-      background: linear-gradient(
-        100deg,
-        #ffffff,
-        #ffe4a0,
-        #b993ff
-      );
+      background:
+        linear-gradient(
+          100deg,
+          #ffffff,
+          #ffe4a0,
+          #b993ff
+        );
+
       -webkit-background-clip: text;
       background-clip: text;
+
       color: transparent;
     }
 
     .hero-description {
       max-width: 680px;
+
       margin: auto;
+
       color: var(--muted);
+
       font-size: 18px;
+
       line-height: 1.65;
     }
 
     .hero-actions {
       margin: 30px 0;
+
       display: flex;
       justify-content: center;
+
       gap: 10px;
+
       flex-wrap: wrap;
     }
 
     .trust {
       display: flex;
       justify-content: center;
+
       gap: 20px;
+
       flex-wrap: wrap;
+
       color: #70707b;
+
       font-size: 12px;
     }
 
@@ -348,9 +434,14 @@
 
     .workspace {
       display: grid;
-      grid-template-columns: 230px 1fr;
+
+      grid-template-columns:
+        230px 1fr;
+
       gap: 16px;
-      margin: 30px auto 70px;
+
+      margin:
+        30px auto 70px;
     }
 
     .side,
@@ -358,88 +449,134 @@
     .stat,
     .feature,
     .tool-card {
-      border: 1px solid var(--line);
+      border:
+        1px solid var(--line);
+
       background:
         linear-gradient(
           145deg,
           rgba(255,255,255,0.055),
           rgba(255,255,255,0.018)
         );
-      box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+
+      box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.35);
     }
 
     .side {
       border-radius: 18px;
+
       padding: 10px;
+
       height: max-content;
+
       position: sticky;
+
       top: 92px;
     }
 
     .side-title {
       color: #686873;
+
       text-transform: uppercase;
+
       letter-spacing: 1.5px;
+
       padding: 10px;
+
       font-size: 10px;
+
       font-weight: 700;
     }
 
     .tool {
       width: 100%;
+
       border: 0;
+
       background: transparent;
+
       color: #a7a7b2;
+
       text-align: left;
+
       padding: 12px;
+
       border-radius: 10px;
+
       font-weight: 700;
+
       transition: 0.2s;
     }
 
     .tool:hover,
     .tool.active {
       color: white;
-      background: rgba(244, 199, 107, 0.09);
+
+      background:
+        rgba(244, 199, 107, 0.09);
     }
 
     .tool.active {
-      box-shadow: inset 2px 0 var(--gold);
+      box-shadow:
+        inset 2px 0 var(--gold);
     }
 
     .panel {
       border-radius: 20px;
+
       padding: 25px;
+
       min-height: 540px;
     }
 
     .panel-head {
       display: flex;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       gap: 12px;
+
       margin-bottom: 20px;
     }
 
     .panel-head h2 {
       margin: 0;
-      font: 700 27px "Space Grotesk", sans-serif;
+
+      font:
+        700 27px
+        "Space Grotesk",
+        sans-serif;
     }
 
     .panel-head p {
       color: var(--muted);
+
       font-size: 13px;
+
       margin: 7px 0 0;
     }
 
     .local-pill {
       height: max-content;
+
       white-space: nowrap;
+
       font-size: 10px;
+
       color: #72e29b;
-      border: 1px solid #254b35;
+
+      border:
+        1px solid #254b35;
+
       background: #0e2417;
+
       padding: 7px 10px;
+
       border-radius: 99px;
+
       font-weight: 700;
     }
 
@@ -447,40 +584,60 @@
 
     .drop-zone {
       min-height: 290px;
-      border: 1px dashed #3b3b46;
+
+      border:
+        1px dashed #3b3b46;
+
       border-radius: 17px;
+
       display: grid;
+
       place-items: center;
+
       text-align: center;
+
       cursor: pointer;
+
       background:
         radial-gradient(
           circle,
           rgba(244,199,107,0.06),
           transparent 60%
         );
+
       transition: 0.2s;
     }
 
     .drop-zone:hover,
     .drop-zone.dragging {
-      border-color: var(--gold);
-      background: rgba(244,199,107,0.055);
+      border-color:
+        var(--gold);
+
+      background:
+        rgba(244,199,107,0.055);
     }
 
     .drop-icon {
       font-size: 32px;
+
       margin-bottom: 12px;
     }
 
     .drop-zone h3 {
-      margin: 0 0 7px;
-      font: 600 19px "Space Grotesk", sans-serif;
+      margin:
+        0 0 7px;
+
+      font:
+        600 19px
+        "Space Grotesk",
+        sans-serif;
     }
 
     .drop-zone p {
       margin: 0;
+
       color: var(--muted);
+
       font-size: 13px;
     }
 
@@ -492,37 +649,55 @@
 
     .files {
       display: grid;
+
       gap: 8px;
+
       margin-top: 12px;
     }
 
     .file {
       display: flex;
+
       align-items: center;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       gap: 10px;
+
       padding: 11px;
-      border: 1px solid var(--line);
+
+      border:
+        1px solid var(--line);
+
       border-radius: 10px;
+
       background: #101015;
+
       font-size: 13px;
     }
 
     .file-name {
       overflow: hidden;
+
       text-overflow: ellipsis;
+
       white-space: nowrap;
     }
 
     .file-size {
       color: var(--muted);
+
       white-space: nowrap;
     }
 
     .remove-file {
       border: 0;
+
       background: transparent;
+
       color: #777783;
+
       font-size: 18px;
     }
 
@@ -534,30 +709,45 @@
 
     .controls {
       display: flex;
+
       gap: 9px;
+
       margin-top: 13px;
+
       flex-wrap: wrap;
     }
 
     .field {
       flex: 1;
+
       min-width: 180px;
+
       padding: 12px;
-      border: 1px solid var(--line);
+
+      border:
+        1px solid var(--line);
+
       border-radius: 11px;
+
       background: #101015;
+
       color: white;
+
       outline: none;
     }
 
     .field:focus {
-      border-color: rgba(244,199,107,0.55);
+      border-color:
+        rgba(244,199,107,0.55);
     }
 
     .status {
       text-align: center;
+
       color: var(--muted);
+
       font-size: 12px;
+
       padding: 18px;
     }
 
@@ -565,24 +755,35 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
       gap: 12px;
+
       margin-bottom: 75px;
     }
 
     .stat {
       border-radius: 15px;
+
       padding: 18px;
     }
 
     .stat strong {
-      font: 700 25px "Space Grotesk", sans-serif;
+      font:
+        700 25px
+        "Space Grotesk",
+        sans-serif;
     }
 
     .stat span {
       display: block;
+
       color: var(--muted);
+
       font-size: 11px;
+
       margin-top: 4px;
     }
 
@@ -594,34 +795,53 @@
 
     .section h2 {
       text-align: center;
-      font: 700 38px "Space Grotesk", sans-serif;
+
+      font:
+        700 38px
+        "Space Grotesk",
+        sans-serif;
+
       letter-spacing: -1.5px;
+
       margin-bottom: 10px;
     }
 
     .section-description {
       text-align: center;
+
       color: var(--muted);
+
       max-width: 600px;
-      margin: 0 auto 28px;
+
+      margin:
+        0 auto 28px;
     }
 
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
       gap: 12px;
     }
 
     .tool-card {
       border-radius: 15px;
+
       padding: 19px;
+
       transition: 0.2s;
+
       cursor: pointer;
     }
 
     .tool-card:hover {
-      transform: translateY(-3px);
-      border-color: #454550;
+      transform:
+        translateY(-3px);
+
+      border-color:
+        #454550;
     }
 
     .tool-icon {
@@ -630,24 +850,32 @@
 
     .tool-card strong {
       display: block;
+
       margin-top: 11px;
     }
 
     .tool-card span {
       display: block;
+
       color: var(--muted);
+
       font-size: 11px;
+
       margin-top: 5px;
     }
 
     .features {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
       gap: 12px;
     }
 
     .feature {
       border-radius: 17px;
+
       padding: 22px;
     }
 
@@ -656,26 +884,43 @@
     }
 
     .feature h3 {
-      font: 600 18px "Space Grotesk", sans-serif;
-      margin: 15px 0 7px;
+      font:
+        600 18px
+        "Space Grotesk",
+        sans-serif;
+
+      margin:
+        15px 0 7px;
     }
 
     .feature p {
       color: var(--muted);
+
       font-size: 13px;
+
       line-height: 1.6;
+
       margin: 0;
     }
 
     /* FOOTER */
 
     footer {
-      border-top: 1px solid var(--line);
-      padding: 30px 0 50px;
+      border-top:
+        1px solid var(--line);
+
+      padding:
+        30px 0 50px;
+
       color: #70707a;
+
       font-size: 12px;
+
       display: flex;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       gap: 15px;
     }
 
@@ -683,42 +928,87 @@
       color: #ddd;
     }
 
+    .footer-links {
+      display: flex;
+
+      align-items: center;
+
+      gap: 18px;
+    }
+
+    .footer-links a {
+      color: #777783;
+
+      text-decoration: none;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #f4c76b;
+    }
+
     /* TOAST */
 
     .toast {
       position: fixed;
+
       right: 20px;
       bottom: 20px;
+
       z-index: 100;
+
       padding: 13px 16px;
-      border: 1px solid var(--line);
-      background: rgba(18,18,22,0.95);
-      backdrop-filter: blur(18px);
+
+      border:
+        1px solid var(--line);
+
+      background:
+        rgba(18,18,22,0.95);
+
+      backdrop-filter:
+        blur(18px);
+
       border-radius: 13px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+
+      box-shadow:
+        0 20px 60px
+        rgba(0,0,0,0.5);
+
       font-size: 13px;
-      transform: translateY(20px);
+
+      transform:
+        translateY(20px);
+
       opacity: 0;
+
       pointer-events: none;
+
       transition: 0.25s;
     }
 
     .toast.show {
       transform: none;
+
       opacity: 1;
     }
 
     /* MOBILE */
 
     @media (max-width: 850px) {
+
       .workspace {
         grid-template-columns: 1fr;
       }
 
       .side {
         position: static;
+
         display: flex;
+
         overflow-x: auto;
+
         gap: 4px;
       }
 
@@ -731,11 +1021,13 @@
       }
 
       .stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
       .tools-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
       .features {
@@ -755,7 +1047,17 @@
       }
     }
 
+    @media (max-width: 600px) {
+
+      .footer-links {
+        margin-top: 12px;
+
+        flex-wrap: wrap;
+      }
+    }
+
     @media (max-width: 480px) {
+
       .tools-grid {
         grid-template-columns: 1fr;
       }
@@ -778,6 +1080,7 @@
 
       footer span {
         display: block;
+
         margin: 7px 0;
       }
     }
@@ -787,69 +1090,111 @@
 <body>
 
   <!-- NAVBAR -->
+
   <header class="nav">
+
     <div class="wrap nav-inner">
+
       <div class="brand">
-        <div class="logo">P</div>
-        PDFLuxe <span class="gold">Premium</span>
+
+        <div class="logo">
+          P
+        </div>
+
+        PDFLuxe
+        <span class="gold">
+          Premium
+        </span>
+
       </div>
 
       <button
         class="btn primary"
-        onclick="scrollToSection('workspace')"
+        onclick="PDFLuxe.scrollToSection('workspace')"
       >
         Open workspace →
       </button>
+
     </div>
+
   </header>
 
   <main>
 
     <!-- HERO -->
+
     <section class="hero wrap">
 
       <div class="badge">
+
         <span class="badge-dot"></span>
+
         PREMIUM PDF WORKSPACE · LOCAL-FIRST
+
       </div>
 
       <h1>
+
         Your PDF.<br />
-        <span>Elevated.</span>
+
+        <span>
+          Elevated.
+        </span>
+
       </h1>
 
       <p class="hero-description">
+
         A cleaner, faster and more beautiful PDF experience.
+
         Drop in a document, choose a workflow and get back to work —
+
         without unnecessary uploads.
+
       </p>
 
       <div class="hero-actions">
+
         <button
           class="btn primary"
-          onclick="scrollToSection('workspace')"
+          onclick="PDFLuxe.scrollToSection('workspace')"
         >
           Start with a PDF ✦
         </button>
 
         <button
           class="btn"
-          onclick="scrollToSection('tools')"
+          onclick="PDFLuxe.scrollToSection('tools')"
         >
           Explore tools
         </button>
+
       </div>
 
       <div class="trust">
-        <span>✓ <strong>No upload required</strong></span>
-        <span>✓ <strong>Private by design</strong></span>
-        <span>✓ <strong>Mobile ready</strong></span>
-        <span>✓ <strong>No account needed</strong></span>
+
+        <span>
+          ✓ <strong>No upload required</strong>
+        </span>
+
+        <span>
+          ✓ <strong>Private by design</strong>
+        </span>
+
+        <span>
+          ✓ <strong>Mobile ready</strong>
+        </span>
+
+        <span>
+          ✓ <strong>No account needed</strong>
+        </span>
+
       </div>
 
     </section>
 
     <!-- WORKSPACE -->
+
     <section
       id="workspace"
       class="workspace wrap"
@@ -910,6 +1255,7 @@
         <div class="panel-head">
 
           <div>
+
             <h2 id="toolTitle">
               Merge PDF
             </h2>
@@ -917,6 +1263,7 @@
             <p id="toolDescription">
               Combine multiple PDFs into one polished document.
             </p>
+
           </div>
 
           <span class="local-pill">
@@ -926,6 +1273,7 @@
         </div>
 
         <!-- DROP ZONE -->
+
         <div
           class="drop-zone"
           id="dropZone"
@@ -957,18 +1305,21 @@
         </div>
 
         <!-- FILES -->
+
         <div
           class="files"
           id="fileList"
         ></div>
 
         <!-- EXTRA CONTROLS -->
+
         <div
           class="controls"
           id="extraControls"
         ></div>
 
         <!-- ACTIONS -->
+
         <div class="controls">
 
           <button
@@ -1000,31 +1351,61 @@
     </section>
 
     <!-- STATS -->
+
     <section class="stats wrap">
 
       <div class="stat">
-        <strong>100%</strong>
-        <span>client-side first</span>
+
+        <strong>
+          100%
+        </strong>
+
+        <span>
+          client-side first
+        </span>
+
       </div>
 
       <div class="stat">
-        <strong>0 B</strong>
-        <span>server upload required</span>
+
+        <strong>
+          0 B
+        </strong>
+
+        <span>
+          server upload required
+        </span>
+
       </div>
 
       <div class="stat">
-        <strong>6+</strong>
-        <span>core workflows</span>
+
+        <strong>
+          6+
+        </strong>
+
+        <span>
+          core workflows
+        </span>
+
       </div>
 
       <div class="stat">
-        <strong>∞</strong>
-        <span>documents</span>
+
+        <strong>
+          ∞
+        </strong>
+
+        <span>
+          documents
+        </span>
+
       </div>
 
     </section>
 
     <!-- TOOLS -->
+
     <section
       id="tools"
       class="section wrap"
@@ -1035,8 +1416,10 @@
       </h2>
 
       <p class="section-description">
+
         The everyday PDF workflows you need,
         without the clutter.
+
       </p>
 
       <div class="tools-grid">
@@ -1045,66 +1428,146 @@
           class="tool-card"
           data-jump="merge"
         >
-          <div class="tool-icon">＋</div>
-          <strong>Merge</strong>
-          <span>Combine PDFs</span>
+
+          <div class="tool-icon">
+            ＋
+          </div>
+
+          <strong>
+            Merge
+          </strong>
+
+          <span>
+            Combine PDFs
+          </span>
+
         </div>
 
         <div
           class="tool-card"
           data-jump="split"
         >
-          <div class="tool-icon">✂</div>
-          <strong>Split</strong>
-          <span>Extract pages</span>
+
+          <div class="tool-icon">
+            ✂
+          </div>
+
+          <strong>
+            Split
+          </strong>
+
+          <span>
+            Extract pages
+          </span>
+
         </div>
 
         <div
           class="tool-card"
           data-jump="compress"
         >
-          <div class="tool-icon">↘</div>
-          <strong>Compress</strong>
-          <span>Optimize PDFs</span>
+
+          <div class="tool-icon">
+            ↘
+          </div>
+
+          <strong>
+            Compress
+          </strong>
+
+          <span>
+            Optimize PDFs
+          </span>
+
         </div>
 
         <div
           class="tool-card"
           data-jump="watermark"
         >
-          <div class="tool-icon">◇</div>
-          <strong>Watermark</strong>
-          <span>Brand every page</span>
+
+          <div class="tool-icon">
+            ◇
+          </div>
+
+          <strong>
+            Watermark
+          </strong>
+
+          <span>
+            Brand every page
+          </span>
+
         </div>
 
         <div
           class="tool-card"
           data-jump="numbers"
         >
-          <div class="tool-icon">#</div>
-          <strong>Page numbers</strong>
-          <span>Professional pagination</span>
+
+          <div class="tool-icon">
+            #
+          </div>
+
+          <strong>
+            Page numbers
+          </strong>
+
+          <span>
+            Professional pagination
+          </span>
+
         </div>
 
         <div
           class="tool-card"
           data-jump="rotate"
         >
-          <div class="tool-icon">↻</div>
-          <strong>Rotate</strong>
-          <span>Fix orientation</span>
+
+          <div class="tool-icon">
+            ↻
+          </div>
+
+          <strong>
+            Rotate
+          </strong>
+
+          <span>
+            Fix orientation
+          </span>
+
         </div>
 
         <div class="tool-card">
-          <div class="tool-icon">✎</div>
-          <strong>Sign</strong>
-          <span>Sign documents</span>
+
+          <div class="tool-icon">
+            ✎
+          </div>
+
+          <strong>
+            Sign
+          </strong>
+
+          <span>
+            Sign documents
+          </span>
+
         </div>
 
         <div class="tool-card">
-          <div class="tool-icon">▧</div>
-          <strong>Images → PDF</strong>
-          <span>JPG / PNG</span>
+
+          <div class="tool-icon">
+            ▧
+          </div>
+
+          <strong>
+            Images → PDF
+          </strong>
+
+          <span>
+            JPG / PNG
+          </span>
+
         </div>
 
       </div>
@@ -1112,6 +1575,7 @@
     </section>
 
     <!-- FEATURES -->
+
     <section class="section wrap">
 
       <h2>
@@ -1119,14 +1583,19 @@
       </h2>
 
       <p class="section-description">
+
         PDFLuxe Premium keeps processing local whenever
         the browser can do the job.
+
       </p>
 
       <div class="features">
 
         <div class="feature">
-          <div class="feature-icon">⌁</div>
+
+          <div class="feature-icon">
+            ⌁
+          </div>
 
           <h3>
             Local-first processing
@@ -1136,10 +1605,14 @@
             Your PDF can be processed directly in the browser
             instead of being unnecessarily sent to a server.
           </p>
+
         </div>
 
         <div class="feature">
-          <div class="feature-icon">◈</div>
+
+          <div class="feature-icon">
+            ◈
+          </div>
 
           <h3>
             Premium by default
@@ -1149,10 +1622,14 @@
             Elegant typography, glass surfaces,
             subtle gradients and a focused interface.
           </p>
+
         </div>
 
         <div class="feature">
-          <div class="feature-icon">⚡</div>
+
+          <div class="feature-icon">
+            ⚡
+          </div>
 
           <h3>
             Fast workflow
@@ -1162,6 +1639,7 @@
             Pick a tool, drop your file,
             run the action and download the result.
           </p>
+
         </div>
 
       </div>
@@ -1171,954 +1649,86 @@
   </main>
 
   <!-- FOOTER -->
-<footer class="wrap">
 
-  <span>
-    <strong>PDFLuxe Premium</strong>
-    · Your PDF, elevated.
-  </span>
+  <footer class="wrap">
 
-  <span class="footer-links">
-    <a href="./privacy.html">
-      Privacy
-    </a>
+    <span>
 
-    <a href="./terms.html">
-      Terms
-    </a>
+      <strong>
+        PDFLuxe Premium
+      </strong>
 
-    <a
-      href="https://github.com/Pranayx24/PDFLuxe-Premium"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      GitHub
-    </a>
-  </span>
+      · Your PDF, elevated.
 
-</footer>
+    </span>
+
+    <span class="footer-links">
+
+      <a href="./privacy.html">
+        Privacy
+      </a>
+
+      <a href="./terms.html">
+        Terms
+      </a>
+
+      <a
+        href="https://github.com/Pranayx24/PDFLuxe-Premium"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+      </a>
+
+    </span>
+
+  </footer>
+
+  <!-- TOAST -->
 
   <div
     class="toast"
     id="toast"
   ></div>
 
+  <!-- PDFLUXE APPLICATION ENGINE -->
+
+  <script src="./js/app.js"></script>
+
+  <!-- SERVICE WORKER -->
+
   <script>
+    if ("serviceWorker" in navigator) {
 
-    const {
-      PDFDocument,
-      rgb,
-      degrees,
-      StandardFonts
-    } = PDFLib;
+      window.addEventListener(
+        "load",
+        () => {
 
-    let selectedFiles = [];
-    let currentTool = "merge";
+          navigator.serviceWorker
+            .register("./service-worker.js")
 
-    const toolConfig = {
+            .then(() => {
 
-      merge: {
-        title: "Merge PDF",
-        description:
-          "Combine multiple PDFs into one polished document.",
-        dropTitle:
-          "Drop PDFs here",
-        hint:
-          "or click to browse · multiple files supported",
-        action:
-          "Merge & download"
-      },
-
-      split: {
-        title: "Split PDF",
-        description:
-          "Extract selected pages into a new PDF.",
-        dropTitle:
-          "Choose a PDF",
-        hint:
-          "one PDF at a time",
-        action:
-          "Extract & download"
-      },
-
-      compress: {
-        title: "Compress PDF",
-        description:
-          "Create an optimized copy of your PDF.",
-        dropTitle:
-          "Choose a PDF",
-        hint:
-          "one PDF at a time",
-        action:
-          "Optimize & download"
-      },
-
-      watermark: {
-        title: "Watermark PDF",
-        description:
-          "Add a refined text watermark to every page.",
-        dropTitle:
-          "Choose a PDF",
-        hint:
-          "one PDF at a time",
-        action:
-          "Apply watermark"
-      },
-
-      numbers: {
-        title: "Page numbers",
-        description:
-          "Add professional pagination to your document.",
-        dropTitle:
-          "Choose a PDF",
-        hint:
-          "one PDF at a time",
-        action:
-          "Add page numbers"
-      },
-
-      rotate: {
-        title: "Rotate PDF",
-        description:
-          "Rotate every page 90° clockwise.",
-        dropTitle:
-          "Choose a PDF",
-        hint:
-          "one PDF at a time",
-        action:
-          "Rotate & download"
-      }
-
-    };
-
-    const $ = selector =>
-      document.querySelector(selector);
-
-    function scrollToSection(id) {
-      document
-        .getElementById(id)
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-    }
-
-    function showToast(message) {
-
-      const toast = $("#toast");
-
-      toast.textContent = message;
-      toast.classList.add("show");
-
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2500);
-
-    }
-
-    function renderFiles() {
-
-      const list = $("#fileList");
-
-      list.innerHTML = "";
-
-      selectedFiles.forEach((file, index) => {
-
-        const item = document.createElement("div");
-
-        item.className = "file";
-
-        item.innerHTML = `
-          <span class="file-name">
-            ${escapeHtml(file.name)}
-          </span>
-
-          <span class="file-size">
-            ${(file.size / 1024 / 1024).toFixed(2)} MB
-
-            <button
-              class="remove-file"
-              onclick="removeFile(${index})"
-              title="Remove"
-            >
-              ×
-            </button>
-          </span>
-        `;
-
-        list.appendChild(item);
-
-      });
-
-    }
-
-    function escapeHtml(value) {
-
-      return value
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-    }
-
-    function removeFile(index) {
-
-      selectedFiles.splice(index, 1);
-
-      renderFiles();
-
-      updateStatus();
-
-    }
-
-    function updateStatus() {
-
-      if (!selectedFiles.length) {
-
-        $("#status").textContent =
-          "Your files stay in this browser. Nothing is uploaded.";
-
-        return;
-
-      }
-
-      $("#status").textContent =
-        `${selectedFiles.length} file${
-          selectedFiles.length === 1 ? "" : "s"
-        } ready.`;
-
-    }
-
-    function setTool(tool) {
-
-      currentTool = tool;
-
-      selectedFiles = [];
-
-      renderFiles();
-
-      const config = toolConfig[tool];
-
-      $("#toolTitle").textContent =
-        config.title;
-
-      $("#toolDescription").textContent =
-        config.description;
-
-      $("#dropTitle").textContent =
-        config.dropTitle;
-
-      $("#dropHint").textContent =
-        config.hint;
-
-      $("#actionButton").textContent =
-        config.action;
-
-      $("#extraControls").innerHTML = "";
-
-      $("#fileInput").multiple =
-        tool === "merge";
-
-      if (tool === "split") {
-
-        $("#extraControls").innerHTML = `
-          <input
-            class="field"
-            id="pageRange"
-            placeholder="Pages e.g. 1,3-5"
-          />
-        `;
-
-      }
-
-      if (tool === "watermark") {
-
-        $("#extraControls").innerHTML = `
-          <input
-            class="field"
-            id="watermarkText"
-            value="PDFLuxe Premium"
-            placeholder="Watermark text"
-          />
-        `;
-
-      }
-
-      updateStatus();
-
-    }
-
-    document
-      .querySelectorAll(".tool")
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            document
-              .querySelectorAll(".tool")
-              .forEach(item =>
-                item.classList.remove("active")
+              console.log(
+                "PDFLuxe Premium offline mode enabled."
               );
 
-            button.classList.add("active");
+            })
 
-            setTool(button.dataset.tool);
+            .catch(error => {
 
-          }
-        );
+              console.error(
+                "Service worker registration failed:",
+                error
+              );
 
-      });
-
-    document
-      .querySelectorAll(".tool-card[data-jump]")
-      .forEach(card => {
-
-        card.addEventListener(
-          "click",
-          () => {
-
-            scrollToSection("workspace");
-
-            setTimeout(() => {
-
-              const target =
-                document.querySelector(
-                  `.tool[data-tool="${card.dataset.jump}"]`
-                );
-
-              if (target) {
-                target.click();
-              }
-
-            }, 350);
-
-          }
-        );
-
-      });
-
-    const dropZone =
-      $("#dropZone");
-
-    const fileInput =
-      $("#fileInput");
-
-    dropZone.addEventListener(
-      "click",
-      () => fileInput.click()
-    );
-
-    fileInput.addEventListener(
-      "change",
-      event => {
-
-        selectedFiles =
-          [...event.target.files];
-
-        renderFiles();
-
-        updateStatus();
-
-      }
-    );
-
-    ["dragenter", "dragover"]
-      .forEach(eventName => {
-
-        dropZone.addEventListener(
-          eventName,
-          event => {
-
-            event.preventDefault();
-
-            dropZone.classList.add(
-              "dragging"
-            );
-
-          }
-        );
-
-      });
-
-    ["dragleave", "drop"]
-      .forEach(eventName => {
-
-        dropZone.addEventListener(
-          eventName,
-          event => {
-
-            event.preventDefault();
-
-            dropZone.classList.remove(
-              "dragging"
-            );
-
-          }
-        );
-
-      });
-
-    dropZone.addEventListener(
-      "drop",
-      event => {
-
-        selectedFiles =
-          [...event.dataTransfer.files]
-            .filter(file =>
-              file.type === "application/pdf"
-            );
-
-        renderFiles();
-
-        updateStatus();
-
-      }
-    );
-
-    $("#clearButton").addEventListener(
-      "click",
-      () => {
-
-        selectedFiles = [];
-
-        fileInput.value = "";
-
-        renderFiles();
-
-        updateStatus();
-
-        showToast("Workspace cleared");
-
-      }
-    );
-
-    function downloadPDF(
-      bytes,
-      filename
-    ) {
-
-      const blob =
-        new Blob(
-          [bytes],
-          {
-            type: "application/pdf"
-          }
-        );
-
-      const url =
-        URL.createObjectURL(blob);
-
-      const anchor =
-        document.createElement("a");
-
-      anchor.href = url;
-      anchor.download = filename;
-
-      document.body.appendChild(anchor);
-
-      anchor.click();
-
-      anchor.remove();
-
-      setTimeout(
-        () => URL.revokeObjectURL(url),
-        1000
-      );
-
-    }
-
-    async function loadPDF(file) {
-
-      return PDFDocument.load(
-        await file.arrayBuffer()
-      );
-
-    }
-
-    async function mergePDFs() {
-
-      if (selectedFiles.length < 2) {
-
-        showToast(
-          "Add at least two PDFs."
-        );
-
-        return;
-
-      }
-
-      const output =
-        await PDFDocument.create();
-
-      for (const file of selectedFiles) {
-
-        const source =
-          await loadPDF(file);
-
-        const pages =
-          await output.copyPages(
-            source,
-            source.getPageIndices()
-          );
-
-        pages.forEach(page =>
-          output.addPage(page)
-        );
-
-      }
-
-      const bytes =
-        await output.save({
-          useObjectStreams: true
-        });
-
-      downloadPDF(
-        bytes,
-        "PDFLuxe-merged.pdf"
-      );
-
-      showToast(
-        "Merged PDF ready ✓"
-      );
-
-    }
-
-    function parsePageNumbers(
-      value,
-      totalPages
-    ) {
-
-      const pages = [];
-
-      value
-        .split(",")
-        .map(item => item.trim())
-        .forEach(item => {
-
-          if (item.includes("-")) {
-
-            const [
-              start,
-              end
-            ] =
-              item
-                .split("-")
-                .map(Number);
-
-            for (
-              let page = start;
-              page <= end;
-              page++
-            ) {
-
-              if (
-                page >= 1 &&
-                page <= totalPages
-              ) {
-
-                pages.push(page - 1);
-
-              }
-
-            }
-
-          } else {
-
-            const page =
-              Number(item);
-
-            if (
-              page >= 1 &&
-              page <= totalPages
-            ) {
-
-              pages.push(page - 1);
-
-            }
-
-          }
-
-        });
-
-      return [
-        ...new Set(pages)
-      ];
-
-    }
-
-    async function splitPDF() {
-
-      if (!selectedFiles.length) {
-
-        showToast(
-          "Choose a PDF first."
-        );
-
-        return;
-
-      }
-
-      const source =
-        await loadPDF(
-          selectedFiles[0]
-        );
-
-      const input =
-        $("#pageRange");
-
-      const value =
-        input?.value.trim() || "1";
-
-      const indexes =
-        parsePageNumbers(
-          value,
-          source.getPageCount()
-        );
-
-      if (!indexes.length) {
-
-        showToast(
-          "Enter valid page numbers."
-        );
-
-        return;
-
-      }
-
-      const output =
-        await PDFDocument.create();
-
-      const pages =
-        await output.copyPages(
-          source,
-          indexes
-        );
-
-      pages.forEach(page =>
-        output.addPage(page)
-      );
-
-      const bytes =
-        await output.save({
-          useObjectStreams: true
-        });
-
-      downloadPDF(
-        bytes,
-        "PDFLuxe-split.pdf"
-      );
-
-      showToast(
-        "Pages extracted ✓"
-      );
-
-    }
-
-    async function compressPDF() {
-
-      if (!selectedFiles.length) {
-
-        showToast(
-          "Choose a PDF first."
-        );
-
-        return;
-
-      }
-
-      const source =
-        await loadPDF(
-          selectedFiles[0]
-        );
-
-      const bytes =
-        await source.save({
-          useObjectStreams: true,
-          addDefaultPage: false
-        });
-
-      downloadPDF(
-        bytes,
-        "PDFLuxe-optimized.pdf"
-      );
-
-      showToast(
-        "Optimized PDF ready ✓"
-      );
-
-    }
-
-    async function watermarkPDF() {
-
-      if (!selectedFiles.length) {
-
-        showToast(
-          "Choose a PDF first."
-        );
-
-        return;
-
-      }
-
-      const source =
-        await loadPDF(
-          selectedFiles[0]
-        );
-
-      const font =
-        await source.embedFont(
-          StandardFonts.HelveticaBold
-        );
-
-      const text =
-        $("#watermarkText")?.value ||
-        "PDFLuxe Premium";
-
-      source.getPages().forEach(
-        page => {
-
-          const size =
-            page.getSize();
-
-          page.drawText(
-            text,
-            {
-              x:
-                size.width / 2 - 70,
-
-              y:
-                size.height / 2,
-
-              size: 25,
-
-              font,
-
-              color:
-                rgb(
-                  0.75,
-                  0.55,
-                  0.2
-                ),
-
-              opacity: 0.2,
-
-              rotate:
-                degrees(35)
-            }
-          );
+            });
 
         }
       );
 
-      const bytes =
-        await source.save({
-          useObjectStreams: true
-        });
-
-      downloadPDF(
-        bytes,
-        "PDFLuxe-watermarked.pdf"
-      );
-
-      showToast(
-        "Watermark applied ✓"
-      );
-
     }
-
-    async function numberPDF() {
-
-      if (!selectedFiles.length) {
-
-        showToast(
-          "Choose a PDF first."
-        );
-
-        return;
-
-      }
-
-      const source =
-        await loadPDF(
-          selectedFiles[0]
-        );
-
-      const font =
-        await source.embedFont(
-          StandardFonts.Helvetica
-        );
-
-      source.getPages().forEach(
-        (page, index) => {
-
-          const size =
-            page.getSize();
-
-          page.drawText(
-            String(index + 1),
-            {
-              x:
-                size.width / 2 - 4,
-
-              y: 18,
-
-              size: 10,
-
-              font,
-
-              color:
-                rgb(
-                  0.4,
-                  0.4,
-                  0.45
-                )
-            }
-          );
-
-        }
-      );
-
-      const bytes =
-        await source.save({
-          useObjectStreams: true
-        });
-
-      downloadPDF(
-        bytes,
-        "PDFLuxe-numbered.pdf"
-      );
-
-      showToast(
-        "Page numbers added ✓"
-      );
-
-    }
-
-    async function rotatePDF() {
-
-      if (!selectedFiles.length) {
-
-        showToast(
-          "Choose a PDF first."
-        );
-
-        return;
-
-      }
-
-      const source =
-        await loadPDF(
-          selectedFiles[0]
-        );
-
-      source
-        .getPages()
-        .forEach(page => {
-
-          const current =
-            page.getRotation().angle;
-
-          page.setRotation(
-            degrees(
-              (current + 90) % 360
-            )
-          );
-
-        });
-
-      const bytes =
-        await source.save({
-          useObjectStreams: true
-        });
-
-      downloadPDF(
-        bytes,
-        "PDFLuxe-rotated.pdf"
-      );
-
-      showToast(
-        "PDF rotated ✓"
-      );
-
-    }
-
-    $("#actionButton").addEventListener(
-      "click",
-      async () => {
-
-        try {
-
-          if (
-            currentTool === "merge"
-          ) {
-            await mergePDFs();
-          }
-
-          else if (
-            currentTool === "split"
-          ) {
-            await splitPDF();
-          }
-
-          else if (
-            currentTool === "compress"
-          ) {
-            await compressPDF();
-          }
-
-          else if (
-            currentTool === "watermark"
-          ) {
-            await watermarkPDF();
-          }
-
-          else if (
-            currentTool === "numbers"
-          ) {
-            await numberPDF();
-          }
-
-          else if (
-            currentTool === "rotate"
-          ) {
-            await rotatePDF();
-          }
-
-        } catch (error) {
-
-          console.error(error);
-
-          showToast(
-            "Something went wrong. Try another PDF."
-          );
-
-        }
-
-      }
-    );
-
-    setTool("merge");
-
   </script>
-<script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("./service-worker.js")
-        .then(() => {
-          console.log("PDFLuxe Premium offline mode enabled.");
-        })
-        .catch(error => {
-          console.error(
-            "Service worker registration failed:",
-            error
-          );
-        });
-    });
-  }
-</script>
+
 </body>
 </html>
