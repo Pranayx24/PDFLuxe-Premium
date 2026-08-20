@@ -139,11 +139,34 @@
     });
   }
 
+  /*
+   * ---------------------------------------------------------
+   * PDF PREVIEW CONNECTION
+   * ---------------------------------------------------------
+   */
+
+  function syncPreview() {
+    if (!window.PDFLuxePreview) {
+      return;
+    }
+
+    if (!selectedFiles.length) {
+      PDFLuxePreview.clear();
+      return;
+    }
+
+    PDFLuxePreview.open(
+      selectedFiles[0]
+    );
+  }
+
   function removeFile(index) {
     selectedFiles.splice(index, 1);
 
     renderFiles();
     updateStatus();
+
+    syncPreview();
   }
 
   function updateStatus() {
@@ -169,6 +192,10 @@
 
     currentTool = tool;
     selectedFiles = [];
+
+    if (window.PDFLuxePreview) {
+      PDFLuxePreview.clear();
+    }
 
     renderFiles();
 
@@ -228,7 +255,9 @@
       [...files].filter(
         file =>
           file.type === "application/pdf" ||
-          file.name.toLowerCase().endsWith(".pdf")
+          file.name
+            .toLowerCase()
+            .endsWith(".pdf")
       );
 
     if (!pdfs.length) {
@@ -250,6 +279,12 @@
 
     renderFiles();
     updateStatus();
+
+    /*
+     * Automatically open the first PDF
+     * in the premium page preview.
+     */
+    syncPreview();
   }
 
   function downloadPDF(bytes, filename) {
@@ -820,6 +855,10 @@
 
           renderFiles();
           updateStatus();
+
+          if (window.PDFLuxePreview) {
+            PDFLuxePreview.clear();
+          }
 
           showToast(
             "Workspace cleared"
